@@ -8,19 +8,13 @@ import com.example.rqchallenge.dto.EmployeeDTO;
 import com.example.rqchallenge.model.Employee;
 
 @Component
-public class EmployeeDTOMapper implements Function<Employee, EmployeeDTO> {
+public class EmployeeDTOMapper implements Function<EmployeeDTO, Employee> {
 
 	@Override
-	public EmployeeDTO apply(Employee employee) {
-
-		EmployeeDTO employeeDTO = new EmployeeDTO();
-		/*employeeDTO.setId(employee.getId());
-		employeeDTO.setName(employee.getName());
-		employeeDTO.setAddress(employee.getAddress());
-		employeeDTO.setDepartment(employee.getDepartment());*/
-
-		return employeeDTO;
-
+	public Employee apply(EmployeeDTO employeeDTO) {
+		return Employee.builder().id(employeeDTO.getId()).employeeName(employeeDTO.getEmployeeName())
+				.employeeSalary(employeeDTO.getEmployeeSalary()).employeeAge(employeeDTO.getEmployeeAge())
+				.profileImage(employeeDTO.getProfileImage()).build();
 	}
 
 }

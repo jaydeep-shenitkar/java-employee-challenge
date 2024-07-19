@@ -20,8 +20,9 @@ public class ErrorCode {
 
 	// Define static final instances for commonly used error codes
 	public static final ErrorCode TOO_MANY_REQUESTS = new ErrorCode(429, "Too Many Requests. Please retry again later");
+
+	public static final ErrorCode EMPTY_API_RESPONSE = new ErrorCode(500, "No Response received from API");
 	
-	public static final ErrorCode FAILED_TO_PREPARE_ES_QUERY = new ErrorCode(1002,
-			"Failed to prepare Elastic Search Query.");
+	
 
 }

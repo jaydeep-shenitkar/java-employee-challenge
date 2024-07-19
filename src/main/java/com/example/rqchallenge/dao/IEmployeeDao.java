@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import com.example.rqchallenge.model.Employee;
+import com.example.rqchallenge.dto.EmployeeDTO;
 
 public interface IEmployeeDao {
 
-	Optional<List<Employee>> getAllEmployees();
+	Optional<List<EmployeeDTO>> getAllEmployees() throws IOException;
+
+	Optional<EmployeeDTO> getEmployeeById(String id) throws IOException;;
+
 }
