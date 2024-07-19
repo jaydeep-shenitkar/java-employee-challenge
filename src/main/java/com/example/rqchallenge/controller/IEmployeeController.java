@@ -1,7 +1,9 @@
-package com.example.rqchallenge.employees;
+package com.example.rqchallenge.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.example.rqchallenge.model.Employee;
 
 import java.io.IOException;
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.Map;
 @RestController
 public interface IEmployeeController {
 
-    @GetMapping()
+    @GetMapping("/getAllEmployees")
     ResponseEntity<List<Employee>> getAllEmployees() throws IOException;
 
     @GetMapping("/search/{searchString}")
@@ -25,7 +27,7 @@ public interface IEmployeeController {
     @GetMapping("/topTenHighestEarningEmployeeNames")
     ResponseEntity<List<String>> getTopTenHighestEarningEmployeeNames();
 
-    @PostMapping()
+    @PostMapping("/createEmployee")
     ResponseEntity<Employee> createEmployee(@RequestBody Map<String, Object> employeeInput);
 
     @DeleteMapping("/{id}")
