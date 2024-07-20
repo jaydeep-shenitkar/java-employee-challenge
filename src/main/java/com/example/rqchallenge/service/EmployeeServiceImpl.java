@@ -153,7 +153,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
 		if (employeeUtils.isEmployeeInputParamValid(employeeInput)) {
 			try {
 				logger.debug("Received employee details are valid");
-				
+
 				EmployeeDTO employeeDTO = new EmployeeDTO();
 				employeeDTO.setEmployeeName((String) employeeInput.get(Constants.EMPLOYEE_NAME));
 				employeeDTO.setEmployeeAge(((Number) employeeInput.get(Constants.EMPLOYEE_AGE)).shortValue());
@@ -175,6 +175,19 @@ public class EmployeeServiceImpl implements IEmployeeService {
 			throw new IllegalArgumentException(Constants.INVALID_EMPLOYEE_INPUT_ERROR_MESSAGE);
 		}
 
+	}
+
+	@Override
+	public String deleteEmployeeById(String id) {
+		try {
+			return employeeDao.deleteEmployeeById(id);
+		} catch (ConnectException e) {
+			logger.error("Could not connect to remote host while making deleteEmployeeById API call ", e);
+			throw new EmployeeAPIException(HttpStatus.SERVICE_UNAVAILABLE.value(), e.getMessage());
+		} catch (IOException e) {
+			logger.error("IOException occurred while making deleteEmployeeById API call", e);
+			throw new EmployeeAPIException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+		}
 	}
 
 }

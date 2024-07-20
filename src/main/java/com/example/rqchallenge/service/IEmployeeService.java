@@ -18,4 +18,6 @@ public interface IEmployeeService {
 	List<String> getTopNHighestEarningEmployeeNames(int number);
 
 	Employee createEmployee(Map<String, Object> employeeInput);
+
+	String deleteEmployeeById(String id);
 }

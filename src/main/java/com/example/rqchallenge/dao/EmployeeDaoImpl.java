@@ -3,12 +3,15 @@ package com.example.rqchallenge.dao;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -23,12 +26,14 @@ import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 
+import com.example.rqchallenge.constatnts.Constants;
 import com.example.rqchallenge.constatnts.RestAPIURLs;
 import com.example.rqchallenge.dto.EmployeeDTO;
 import com.example.rqchallenge.dto.EmployeeDTOAPIResponse;
 import com.example.rqchallenge.dto.EmployeeListDTOAPIResponse;
 import com.example.rqchallenge.exception.EmployeeAPIException;
 import com.example.rqchallenge.exception.EmployeeAPIThrottledException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
@@ -144,6 +149,39 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 				int responseStatus = response.getStatusLine().getStatusCode();
 				String responseStr = EntityUtils.toString(response.getEntity());
 				logger.error("Response received from Create Employee API : " + responseStatus);
+				EntityUtils.consumeQuietly(response.getEntity());
+				throw new EmployeeAPIException(responseStatus, responseStr);
+			}
+		}
+	}
+
+	@Override
+	@Retryable(retryFor = ConnectException.class, maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 2))
+	public String deleteEmployeeById(String id) throws IOException {
+
+		String url = String.format(RestAPIURLs.DELETE_EMPLOYEE_BY_ID, id);
+		logger.debug("Invoking API: " + url);
+		HttpDelete httpDelete = new HttpDelete(url);
+
+		try (CloseableHttpResponse response = httpClient.execute(httpDelete)) {
+			if (response.getStatusLine().getStatusCode() == HttpStatus.OK.value()) {
+				logger.info("Delete Employee By Id API returned 200 OK");
+				String responseStr = EntityUtils.toString(response.getEntity());
+				EntityUtils.consumeQuietly(response.getEntity());
+				TypeReference<HashMap<String, String>> typeRef = new TypeReference<HashMap<String, String>>() {};
+
+				Map<String, String> apiResponse = objectMapper.readValue(responseStr, typeRef);
+				return apiResponse.get(Constants.MESSAGE);
+
+			} else if (response.getStatusLine().getStatusCode() == HttpStatus.TOO_MANY_REQUESTS.value()) {
+				logger.error("Delete Employee By Id API throttled.");
+				String responseStr = EntityUtils.toString(response.getEntity());
+				EntityUtils.consumeQuietly(response.getEntity());
+				throw new EmployeeAPIThrottledException(HttpStatus.TOO_MANY_REQUESTS.value(), responseStr);
+			} else {
+				int responseStatus = response.getStatusLine().getStatusCode();
+				String responseStr = EntityUtils.toString(response.getEntity());
+				logger.error("Response received from Delete Employee By Id  API : " + responseStatus);
 				EntityUtils.consumeQuietly(response.getEntity());
 				throw new EmployeeAPIException(responseStatus, responseStr);
 			}

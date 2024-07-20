@@ -14,4 +14,6 @@ public interface IEmployeeDao {
 
 	EmployeeDTO createEmployee(EmployeeDTO employeeDTO) throws IOException;
 
+	String deleteEmployeeById(String id) throws IOException;
+
 }

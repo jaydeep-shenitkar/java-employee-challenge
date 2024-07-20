@@ -80,8 +80,10 @@ public class EmployeeController implements IEmployeeController {
 
 	@Override
 	public ResponseEntity<String> deleteEmployeeById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		logger.info("Deleting Employee with Id " + id);
+		String message = employeeService.deleteEmployeeById(id);
+		ResponseEntity<String> responseEntity = new ResponseEntity<String>(message, HttpStatus.OK);
+		return responseEntity;
 	}
 
 }
