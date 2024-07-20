@@ -165,7 +165,8 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 
 		try (CloseableHttpResponse response = httpClient.execute(httpDelete)) {
 			if (response.getStatusLine().getStatusCode() == HttpStatus.OK.value()) {
-				logger.info("Delete Employee By Id API returned 200 OK");
+				logger.info(
+						"Delete Employee By Id API returned 200 OK, Successfully deleted employee for input id " + id);
 				String responseStr = EntityUtils.toString(response.getEntity());
 				EntityUtils.consumeQuietly(response.getEntity());
 				TypeReference<HashMap<String, String>> typeRef = new TypeReference<HashMap<String, String>>() {};

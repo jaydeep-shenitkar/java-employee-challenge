@@ -30,7 +30,7 @@ public class EmployeeUtils {
 	}
 
 	public boolean isEmployeeAgeValid(Object obj) {
-		if (isParamNotNull(obj, Constants.EMPLOYEE_NAME)) {
+		if (isParamNotNull(obj, Constants.EMPLOYEE_AGE)) {
 			Integer age = (Integer) obj;
 			if (age > 17 && age < 120) {
 				return true;
@@ -41,7 +41,7 @@ public class EmployeeUtils {
 	}
 
 	public boolean isEmployeeSalaryValid(Object obj) {
-		if (isParamNotNull(obj, Constants.EMPLOYEE_NAME)) {
+		if (isParamNotNull(obj, Constants.EMPLOYEE_SALARY)) {
 			Integer salary = (Integer) obj;
 			if (salary > 0) {
 				return true;

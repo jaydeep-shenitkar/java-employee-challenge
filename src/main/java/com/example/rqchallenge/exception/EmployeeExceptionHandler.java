@@ -2,6 +2,8 @@ package com.example.rqchallenge.exception;
 
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class EmployeeExceptionHandler {
+
+	Logger logger = LoggerFactory.getLogger(EmployeeExceptionHandler.class);
 
 	@ExceptionHandler(EmployeeAPIThrottledException.class)
 	@ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
@@ -28,6 +32,7 @@ public class EmployeeExceptionHandler {
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<APIErrorResponse> handleException(Exception ex) {
+		logger.error("Exception occurred while processing API request ", ex);
 		APIErrorResponse res = new APIErrorResponse();
 		res.setTimeStamp(new Date().getTime());
 		res.setErrorCode(HttpStatus.INTERNAL_SERVER_ERROR.value());

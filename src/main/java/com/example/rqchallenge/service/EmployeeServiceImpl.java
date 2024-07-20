@@ -52,6 +52,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
 							ErrorCode.EMPTY_API_RESPONSE.getMessage()));
 
 			List<Employee> employeeList = employeeDTOList.stream().map(employeeDTOMapper).collect(Collectors.toList());
+			logger.info("Successfully fetched list of all employees. Total employees fetched: " + employeeList.size());
 			return employeeList;
 
 		} catch (ConnectException e) {
@@ -75,6 +76,10 @@ public class EmployeeServiceImpl implements IEmployeeService {
 			List<Employee> employeeList = employeeDTOList.stream()
 					.filter(emp -> StringUtils.containsIgnoreCase(emp.getEmployeeName(), searchString))
 					.map(employeeDTOMapper).collect(Collectors.toList());
+
+			logger.info("Successfully fetched list of employees which fulfill search criteria " + searchString
+					+ ". Total employees fetched :" + employeeList.size());
+			
 			return employeeList;
 
 		} catch (ConnectException e) {
@@ -95,6 +100,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
 							ErrorCode.NO_MATCHING_EMPLOYEE_FOUND.getMessage()));
 
 			Employee employee = employeeDTOMapper.apply(employeeDTO);
+			logger.info("Successfully fetched employee by given id " + id);
 			return employee;
 
 		} catch (ConnectException e) {
@@ -160,6 +166,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
 				employeeDTO.setEmployeeSalary((Integer) employeeInput.get(Constants.EMPLOYEE_SALARY));
 
 				EmployeeDTO employeeDTOResponse = employeeDao.createEmployee(employeeDTO);
+				logger.info("Successfully created employee");
 				return employeeDTOMapper.apply(employeeDTOResponse);
 
 			} catch (ConnectException e) {
