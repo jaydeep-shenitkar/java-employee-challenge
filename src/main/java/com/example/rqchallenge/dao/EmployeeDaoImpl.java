@@ -2,12 +2,17 @@ package com.example.rqchallenge.dao;
 
 import java.io.IOException;
 import java.net.ConnectException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +29,6 @@ import com.example.rqchallenge.dto.EmployeeDTOAPIResponse;
 import com.example.rqchallenge.dto.EmployeeListDTOAPIResponse;
 import com.example.rqchallenge.exception.EmployeeAPIException;
 import com.example.rqchallenge.exception.EmployeeAPIThrottledException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
@@ -78,6 +82,7 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 		String url = String.format(RestAPIURLs.GET_EMPLOYEE_BY_ID, id);
 		logger.debug("Invoking API: " + url);
 		HttpGet httpGet = new HttpGet(url);
+
 		try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
 			if (response.getStatusLine().getStatusCode() == HttpStatus.OK.value()) {
 				logger.info("Get Employees By Id API returned 200 OK");
@@ -98,6 +103,47 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 				int responseStatus = response.getStatusLine().getStatusCode();
 				String responseStr = EntityUtils.toString(response.getEntity());
 				logger.error("Response received from Get Employees By Id  API : " + responseStatus);
+				EntityUtils.consumeQuietly(response.getEntity());
+				throw new EmployeeAPIException(responseStatus, responseStr);
+			}
+		}
+	}
+
+	@Override
+	@Retryable(retryFor = ConnectException.class, maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 2))
+	public EmployeeDTO createEmployee(EmployeeDTO inputEmployeeDTO) throws IOException {
+
+		logger.debug("Invoking API: " + RestAPIURLs.CREATE_EMPLOYEE);
+
+		HttpPost httpPost = new HttpPost(RestAPIURLs.CREATE_EMPLOYEE);
+
+		final List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("employee_name", inputEmployeeDTO.getEmployeeName()));
+		params.add(new BasicNameValuePair("employee_salary", String.valueOf(inputEmployeeDTO.getEmployeeSalary())));
+		params.add(new BasicNameValuePair("employee_age", String.valueOf(inputEmployeeDTO.getEmployeeAge())));
+
+		httpPost.setEntity(new UrlEncodedFormEntity(params));
+
+		try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+			if (response.getStatusLine().getStatusCode() == HttpStatus.OK.value()) {
+				logger.info("Create Employee API returned 200 OK");
+				String responseStr = EntityUtils.toString(response.getEntity());
+				EntityUtils.consumeQuietly(response.getEntity());
+
+				EmployeeDTOAPIResponse employeeApiResponse = objectMapper.readValue(responseStr,
+						EmployeeDTOAPIResponse.class);
+				EmployeeDTO employeeDTO = employeeApiResponse.getData();
+				return employeeDTO;
+
+			} else if (response.getStatusLine().getStatusCode() == HttpStatus.TOO_MANY_REQUESTS.value()) {
+				logger.error("Create Employee  API throttled.");
+				String responseStr = EntityUtils.toString(response.getEntity());
+				EntityUtils.consumeQuietly(response.getEntity());
+				throw new EmployeeAPIThrottledException(HttpStatus.TOO_MANY_REQUESTS.value(), responseStr);
+			} else {
+				int responseStatus = response.getStatusLine().getStatusCode();
+				String responseStr = EntityUtils.toString(response.getEntity());
+				logger.error("Response received from Create Employee API : " + responseStatus);
 				EntityUtils.consumeQuietly(response.getEntity());
 				throw new EmployeeAPIException(responseStatus, responseStr);
 			}

@@ -55,20 +55,27 @@ public class EmployeeController implements IEmployeeController {
 
 	@Override
 	public ResponseEntity<Integer> getHighestSalaryOfEmployees() {
-		// TODO Auto-generated method stub
-		return null;
+		logger.info("Initiating Get Highest salary of employees");
+		Integer highestSalary = employeeService.getHighestSalaryOfEmployees();
+		ResponseEntity<Integer> responseEntity = new ResponseEntity<Integer>(highestSalary, HttpStatus.OK);
+		return responseEntity;
 	}
 
 	@Override
 	public ResponseEntity<List<String>> getTopTenHighestEarningEmployeeNames() {
-		// TODO Auto-generated method stub
-		return null;
+		logger.info("Initiating fetching of Top 10 Highest earning employee names");
+		List<String> topTenHighestEarningEmpNames = employeeService.getTopNHighestEarningEmployeeNames(10);
+		ResponseEntity<List<String>> responseEntity = new ResponseEntity<List<String>>(topTenHighestEarningEmpNames,
+				HttpStatus.OK);
+		return responseEntity;
 	}
 
 	@Override
 	public ResponseEntity<Employee> createEmployee(Map<String, Object> employeeInput) {
-		// TODO Auto-generated method stub
-		return null;
+		logger.info("Creating new Employee from received input");
+		Employee createdEmployee = employeeService.createEmployee(employeeInput);
+		ResponseEntity<Employee> responseEntity = new ResponseEntity<Employee>(createdEmployee, HttpStatus.CREATED);
+		return responseEntity;
 	}
 
 	@Override

@@ -10,6 +10,8 @@ public interface IEmployeeDao {
 
 	Optional<List<EmployeeDTO>> getAllEmployees() throws IOException;
 
-	Optional<EmployeeDTO> getEmployeeById(String id) throws IOException;;
+	Optional<EmployeeDTO> getEmployeeById(String id) throws IOException;
+
+	EmployeeDTO createEmployee(EmployeeDTO employeeDTO) throws IOException;
 
 }

@@ -30,8 +30,18 @@ public class EmployeeExceptionHandler {
 	public ResponseEntity<APIErrorResponse> handleException(Exception ex) {
 		APIErrorResponse res = new APIErrorResponse();
 		res.setTimeStamp(new Date().getTime());
+		res.setErrorCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		res.setMessage(ex.getMessage());
 		return ResponseEntity.internalServerError().body(res);
+	}
+
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<APIErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
+		APIErrorResponse res = new APIErrorResponse();
+		res.setErrorCode(HttpStatus.BAD_REQUEST.value());
+		res.setTimeStamp(new Date().getTime());
+		res.setMessage(ex.getMessage());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
 	}
 
 }
