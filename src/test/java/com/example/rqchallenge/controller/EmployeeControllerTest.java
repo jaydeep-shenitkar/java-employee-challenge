@@ -1,11 +1,13 @@
 package com.example.rqchallenge.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +21,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.example.rqchallenge.exception.EmployeeAPIException;
+import com.example.rqchallenge.exception.EmployeeAPIThrottledException;
 import com.example.rqchallenge.model.Employee;
 import com.example.rqchallenge.service.IEmployeeService;
 

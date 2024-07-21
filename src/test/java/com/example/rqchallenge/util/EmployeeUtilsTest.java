@@ -26,21 +26,35 @@ public class EmployeeUtilsTest {
 	}
 
 	@Test
-	public void testNullCheckIsParamNotNull() {
-		assertThrows(IllegalArgumentException.class, () -> employeeUtils.isParamNotNull(null, Constants.EMPLOYEE_NAME),
-				"employee_name can not be empty");
+	public void testNullCheckIsParamNotNullAge() {
+		assertFalse(() -> employeeUtils.isEmployeeAgeValid(null));
 	}
-
+	
+	@Test
+	public void testNullCheckIsParamNotNullName() {
+		assertFalse(() -> employeeUtils.isEmployeeNameValid(null));
+	}
+	
+	@Test
+	public void testNullCheckIsParamNotNullSalary() {
+		assertFalse(() -> employeeUtils.isEmployeeSalaryValid(null));
+	}
+	
 	@Test
 	public void testIsEmployeeAgeValid() {
 		assertTrue(employeeUtils.isEmployeeAgeValid(40));
 	}
 
 	@Test
-	public void testIsEmployeeAgeValidIncorrect() {
+	public void testIsEmployeeAgeValidIncorrectGt() {
 		assertFalse(() -> employeeUtils.isEmployeeAgeValid(200));
 	}
-
+	
+	@Test
+	public void testIsEmployeeAgeValidIncorrectLt() {
+		assertFalse(() -> employeeUtils.isEmployeeAgeValid(12));
+	}
+	
 	@Test
 	public void testIsEmployeeSalaryValid() {
 		assertTrue(employeeUtils.isEmployeeNameValid("John Doe"));

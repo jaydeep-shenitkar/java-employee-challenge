@@ -15,7 +15,7 @@ public class EmployeeUtils {
 
 	public boolean isParamNotNull(Object obj, String param) {
 		if (Objects.isNull(obj)) {
-			throw new IllegalArgumentException(String.format(Constants.INVALID_INPUT_ERROR_MESSAGE, param));
+			return false;
 		}
 		return true;
 	}
