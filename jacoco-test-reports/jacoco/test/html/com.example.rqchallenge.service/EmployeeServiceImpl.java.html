@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmployeeServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">rqChallenge</a> &gt; <a href="index.source.html" class="el_package">com.example.rqchallenge.service</a> &gt; <span class="el_source">EmployeeServiceImpl.java</span></div><h1>EmployeeServiceImpl.java</h1><pre class="source lang-java linenums">package com.example.rqchallenge.service;
+
+import java.io.IOException;
+import java.net.ConnectException;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
+import com.example.rqchallenge.constatnts.Constants;
+import com.example.rqchallenge.dao.IEmployeeDao;
+import com.example.rqchallenge.dto.EmployeeDTO;
+import com.example.rqchallenge.exception.EmployeeAPIException;
+import com.example.rqchallenge.exception.ErrorCode;
+import com.example.rqchallenge.model.Employee;
+import com.example.rqchallenge.util.EmployeeDTOMapper;
+import com.example.rqchallenge.util.EmployeeUtils;
+
+@Service
+<span class="fc" id="L28">public class EmployeeServiceImpl implements IEmployeeService {</span>
+
+<span class="fc" id="L30">	private static final Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);</span>
+
+	@Autowired
+	private IEmployeeDao employeeDao;
+
+	@Autowired
+	private EmployeeDTOMapper employeeDTOMapper;
+
+	@Autowired
+	private EmployeeUtils employeeUtils;
+
+	@Override
+	public List&lt;Employee&gt; getAllEmployees() {
+		try {
+
+<span class="fc" id="L45">			Optional&lt;List&lt;EmployeeDTO&gt;&gt; employee = employeeDao.getAllEmployees();</span>
+<span class="fc" id="L46">			List&lt;EmployeeDTO&gt; employeeDTOList = employee</span>
+<span class="fc" id="L47">					.orElseThrow(() -&gt; new EmployeeAPIException(ErrorCode.EMPTY_API_RESPONSE.getCode(),</span>
+<span class="fc" id="L48">							ErrorCode.EMPTY_API_RESPONSE.getMessage()));</span>
+
+<span class="fc" id="L50">			List&lt;Employee&gt; employeeList = employeeDTOList.stream().map(employeeDTOMapper).collect(Collectors.toList());</span>
+<span class="fc" id="L51">			logger.info(&quot;Successfully fetched list of all employees. Total employees fetched: &quot; + employeeList.size());</span>
+<span class="fc" id="L52">			return employeeList;</span>
+
+<span class="fc" id="L54">		} catch (ConnectException e) {</span>
+<span class="fc" id="L55">			logger.error(&quot;Could not connect to remote host while making getAllEmployees API call &quot;, e);</span>
+<span class="fc" id="L56">			throw new EmployeeAPIException(HttpStatus.SERVICE_UNAVAILABLE.value(), e.getMessage());</span>
+<span class="fc" id="L57">		} catch (IOException e) {</span>
+<span class="fc" id="L58">			logger.error(&quot;IOException occurred while making getAllEmployees API call&quot;, e);</span>
+<span class="fc" id="L59">			throw new EmployeeAPIException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());</span>
+		}
+	}
+
+	@Override
+	public List&lt;Employee&gt; getEmployeesByNameSearch(String searchString) {
+		try {
+
+<span class="fc" id="L67">			Optional&lt;List&lt;EmployeeDTO&gt;&gt; employee = employeeDao.getAllEmployees();</span>
+<span class="fc" id="L68">			List&lt;EmployeeDTO&gt; employeeDTOList = employee</span>
+<span class="fc" id="L69">					.orElseThrow(() -&gt; new EmployeeAPIException(ErrorCode.NO_RECORDS_FOUND.getCode(),</span>
+<span class="fc" id="L70">							ErrorCode.NO_RECORDS_FOUND.getMessage()));</span>
+
+<span class="fc" id="L72">			List&lt;Employee&gt; employeeList = employeeDTOList.stream()</span>
+<span class="fc" id="L73">					.filter(emp -&gt; StringUtils.containsIgnoreCase(emp.getEmployeeName(), searchString))</span>
+<span class="fc" id="L74">					.map(employeeDTOMapper).collect(Collectors.toList());</span>
+
+<span class="fc" id="L76">			logger.info(&quot;Successfully fetched list of employees which fulfill search criteria &quot; + searchString</span>
+<span class="fc" id="L77">					+ &quot;. Total employees fetched :&quot; + employeeList.size());</span>
+			
+<span class="fc" id="L79">			return employeeList;</span>
+
+<span class="fc" id="L81">		} catch (ConnectException e) {</span>
+<span class="fc" id="L82">			logger.error(&quot;Could not connect to remote host while making getEmployeesByNameSearch API call &quot;, e);</span>
+<span class="fc" id="L83">			throw new EmployeeAPIException(HttpStatus.SERVICE_UNAVAILABLE.value(), e.getMessage());</span>
+<span class="fc" id="L84">		} catch (IOException e) {</span>
+<span class="fc" id="L85">			logger.error(&quot;IOException occurred while making getEmployeesByNameSearch API call&quot;, e);</span>
+<span class="fc" id="L86">			throw new EmployeeAPIException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());</span>
+		}
+	}
+
+	@Override
+	public Employee getEmployeeById(String id) {
+		try {
+<span class="fc" id="L93">			Optional&lt;EmployeeDTO&gt; employeeOptional = employeeDao.getEmployeeById(id);</span>
+<span class="fc" id="L94">			EmployeeDTO employeeDTO = employeeOptional</span>
+<span class="fc" id="L95">					.orElseThrow(() -&gt; new EmployeeAPIException(ErrorCode.NO_MATCHING_EMPLOYEE_FOUND.getCode(),</span>
+<span class="fc" id="L96">							ErrorCode.NO_MATCHING_EMPLOYEE_FOUND.getMessage()));</span>
+
+<span class="fc" id="L98">			Employee employee = employeeDTOMapper.apply(employeeDTO);</span>
+<span class="fc" id="L99">			logger.info(&quot;Successfully fetched employee by given id &quot; + id);</span>
+<span class="fc" id="L100">			return employee;</span>
+
+<span class="fc" id="L102">		} catch (ConnectException e) {</span>
+<span class="fc" id="L103">			logger.error(&quot;Could not connect to remote host while making getAllEmployees API call &quot;, e);</span>
+<span class="fc" id="L104">			throw new EmployeeAPIException(HttpStatus.SERVICE_UNAVAILABLE.value(), e.getMessage());</span>
+<span class="fc" id="L105">		} catch (IOException e) {</span>
+<span class="fc" id="L106">			logger.error(&quot;IOException occurred while making getAllEmployees API call&quot;, e);</span>
+<span class="fc" id="L107">			throw new EmployeeAPIException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());</span>
+		}
+	}
+
+	@Override
+	public Integer getHighestSalaryOfEmployees() {
+		try {
+
+<span class="fc" id="L115">			Optional&lt;List&lt;EmployeeDTO&gt;&gt; employee = employeeDao.getAllEmployees();</span>
+<span class="fc" id="L116">			List&lt;EmployeeDTO&gt; employeeDTOList = employee</span>
+<span class="fc" id="L117">					.orElseThrow(() -&gt; new EmployeeAPIException(ErrorCode.EMPTY_API_RESPONSE.getCode(),</span>
+<span class="fc" id="L118">							ErrorCode.EMPTY_API_RESPONSE.getMessage()));</span>
+
+<span class="fc" id="L120">			return employeeDTOList.stream().map(EmployeeDTO::getEmployeeSalary)</span>
+<span class="fc" id="L121">					.max(Comparator.comparing(Integer::intValue)).get();</span>
+
+<span class="fc" id="L123">		} catch (ConnectException e) {</span>
+<span class="fc" id="L124">			logger.error(&quot;Could not connect to remote host while making getAllEmployees API call &quot;, e);</span>
+<span class="fc" id="L125">			throw new EmployeeAPIException(HttpStatus.SERVICE_UNAVAILABLE.value(), e.getMessage());</span>
+<span class="fc" id="L126">		} catch (IOException e) {</span>
+<span class="fc" id="L127">			logger.error(&quot;IOException occurred while making getAllEmployees API call&quot;, e);</span>
+<span class="fc" id="L128">			throw new EmployeeAPIException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());</span>
+		}
+	}
+
+	@Override
+	public List&lt;String&gt; getTopNHighestEarningEmployeeNames(int number) {
+		try {
+
+<span class="fc" id="L136">			Optional&lt;List&lt;EmployeeDTO&gt;&gt; employee = employeeDao.getAllEmployees();</span>
+<span class="fc" id="L137">			List&lt;EmployeeDTO&gt; employeeDTOList = employee</span>
+<span class="fc" id="L138">					.orElseThrow(() -&gt; new EmployeeAPIException(ErrorCode.EMPTY_API_RESPONSE.getCode(),</span>
+<span class="fc" id="L139">							ErrorCode.EMPTY_API_RESPONSE.getMessage()));</span>
+
+<span class="fc" id="L141">			return employeeDTOList.stream().sorted(Comparator.comparing(EmployeeDTO::getEmployeeSalary).reversed())</span>
+<span class="fc" id="L142">					.limit(number).map(EmployeeDTO::getEmployeeName).collect(Collectors.toList());</span>
+<span class="fc" id="L143">		} catch (ConnectException e) {</span>
+<span class="fc" id="L144">			logger.error(&quot;Could not connect to remote host while making getAllEmployees API call &quot;, e);</span>
+<span class="fc" id="L145">			throw new EmployeeAPIException(HttpStatus.SERVICE_UNAVAILABLE.value(), e.getMessage());</span>
+<span class="fc" id="L146">		} catch (IOException e) {</span>
+<span class="fc" id="L147">			logger.error(&quot;IOException occurred while making getAllEmployees API call&quot;, e);</span>
+<span class="fc" id="L148">			throw new EmployeeAPIException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());</span>
+		}
+	}
+
+	@Override
+	public Employee createEmployee(Map&lt;String, Object&gt; employeeInput) {
+
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">		if (employeeUtils.isEmployeeInputParamValid(employeeInput)) {</span>
+			try {
+<span class="fc" id="L157">				logger.debug(&quot;Received employee details are valid&quot;);</span>
+
+<span class="fc" id="L159">				EmployeeDTO employeeDTO = new EmployeeDTO();</span>
+<span class="fc" id="L160">				employeeDTO.setEmployeeName((String) employeeInput.get(Constants.EMPLOYEE_NAME));</span>
+<span class="fc" id="L161">				employeeDTO.setEmployeeAge(((Number) employeeInput.get(Constants.EMPLOYEE_AGE)).shortValue());</span>
+<span class="fc" id="L162">				employeeDTO.setEmployeeSalary((Integer) employeeInput.get(Constants.EMPLOYEE_SALARY));</span>
+
+<span class="fc" id="L164">				EmployeeDTO employeeDTOResponse = employeeDao.createEmployee(employeeDTO);</span>
+<span class="fc" id="L165">				logger.info(&quot;Successfully created employee&quot;);</span>
+<span class="fc" id="L166">				return employeeDTOMapper.apply(employeeDTOResponse);</span>
+
+<span class="fc" id="L168">			} catch (ConnectException e) {</span>
+<span class="fc" id="L169">				logger.error(&quot;Could not connect to remote host while making createEmployee API call &quot;, e);</span>
+<span class="fc" id="L170">				throw new EmployeeAPIException(HttpStatus.SERVICE_UNAVAILABLE.value(), e.getMessage());</span>
+<span class="fc" id="L171">			} catch (IOException e) {</span>
+<span class="fc" id="L172">				logger.error(&quot;IOException occurred while making CreateEmployee API call&quot;, e);</span>
+<span class="fc" id="L173">				throw new EmployeeAPIException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());</span>
+			}
+
+		} else {
+<span class="nc" id="L177">			logger.error(&quot;Received employee details are invalid, throwing exception&quot;);</span>
+<span class="nc" id="L178">			throw new IllegalArgumentException(Constants.INVALID_EMPLOYEE_INPUT_ERROR_MESSAGE);</span>
+		}
+
+	}
+
+	@Override
+	public String deleteEmployeeById(String id) {
+		try {
+<span class="fc" id="L186">			return employeeDao.deleteEmployeeById(id);</span>
+<span class="fc" id="L187">		} catch (ConnectException e) {</span>
+<span class="fc" id="L188">			logger.error(&quot;Could not connect to remote host while making deleteEmployeeById API call &quot;, e);</span>
+<span class="fc" id="L189">			throw new EmployeeAPIException(HttpStatus.SERVICE_UNAVAILABLE.value(), e.getMessage());</span>
+<span class="fc" id="L190">		} catch (IOException e) {</span>
+<span class="fc" id="L191">			logger.error(&quot;IOException occurred while making deleteEmployeeById API call&quot;, e);</span>
+<span class="fc" id="L192">			throw new EmployeeAPIException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());</span>
+		}
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

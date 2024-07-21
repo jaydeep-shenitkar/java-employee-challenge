@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmployeeConfiguration.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">rqChallenge</a> &gt; <a href="index.source.html" class="el_package">com.example.rqchallenge.config</a> &gt; <span class="el_source">EmployeeConfiguration.java</span></div><h1>EmployeeConfiguration.java</h1><pre class="source lang-java linenums">package com.example.rqchallenge.config;
+
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+/**
+ * A configuration class used for creating HttpClient Connection Pool and
+ * objectMapper instances.
+ *
+ */
+@Configuration
+<span class="fc" id="L21">public class EmployeeConfiguration {</span>
+
+<span class="fc" id="L23">	private static final Logger logger = LoggerFactory.getLogger(EmployeeConfiguration.class);</span>
+
+	@Value(&quot;${max_connetion:10}&quot;)
+	private String maxConnectionProp;
+
+	@Value(&quot;${max_connetions_per_route:3}&quot;)
+	private String maxConnectionPerRouteProp;
+
+	@Value(&quot;${socket_timeout:10000}&quot;)
+	private String socketTimeoutProp;
+
+	@Value(&quot;${connect_timeout:6000}&quot;)
+	private String connectTimeoutProp;
+
+	@Value(&quot;${connection_request_timeout:10000}&quot;)
+	private String connectionRequestTimeoutProp;
+
+	/**
+	 * 
+	 * Creates a CloseableHttpClient from PoolingConnectionManager. &lt;br&gt;
+	 * Note: PoolingConnectionManager is created with below default values. &lt;br&gt;
+	 * &lt;b&gt; MaxConnection&lt;/b&gt;: Maximum number of connections in a pool. &lt;br&gt;
+	 * &lt;b&gt; maxConnectionPerRoute&lt;/b&gt;: Maximum number of concurrent connection to
+	 * same endpoint. &lt;br&gt;
+	 * &lt;b&gt; socketTimeout&lt;/b&gt;: Idle time before closing connection with server&lt;br&gt;
+	 * &lt;b&gt; connectTimeout&lt;/b&gt;: Timeout until a connection with the server is
+	 * established. &lt;br&gt;
+	 * &lt;b&gt; connectionRequestTimeout&lt;/b&gt;: Max timeout to fetch a connection from the
+	 * connection pool when all connections are busy.
+	 * 
+	 * @return CloseableHttpClient
+	 */
+	@Bean
+	public CloseableHttpClient httpClient() {
+
+<span class="fc" id="L58">		int maxConnection = Integer.parseInt(maxConnectionProp);</span>
+<span class="fc" id="L59">		int maxConnectionPerRoute = Integer.parseInt(maxConnectionPerRouteProp);</span>
+<span class="fc" id="L60">		int socketTimeout = Integer.parseInt(socketTimeoutProp);</span>
+<span class="fc" id="L61">		int connectTimeout = Integer.parseInt(connectTimeoutProp);</span>
+<span class="fc" id="L62">		int connectionRequestTimeout = Integer.parseInt(connectionRequestTimeoutProp);</span>
+
+<span class="fc" id="L64">		PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();</span>
+<span class="fc" id="L65">		connectionManager.setMaxTotal(maxConnection);</span>
+<span class="fc" id="L66">		connectionManager.setDefaultMaxPerRoute(maxConnectionPerRoute);</span>
+
+<span class="fc" id="L68">		RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(socketTimeout)</span>
+<span class="fc" id="L69">				.setConnectTimeout(connectTimeout).setConnectionRequestTimeout(connectionRequestTimeout).build();</span>
+
+<span class="fc" id="L71">		return HttpClients.custom().setConnectionManager(connectionManager).setDefaultRequestConfig(requestConfig)</span>
+<span class="fc" id="L72">				.build();</span>
+	}
+
+	/**
+	 * @return ObjectMapper
+	 */
+	@Bean
+	public ObjectMapper objectMapper() {
+<span class="fc" id="L80">		ObjectMapper objectMapper = new ObjectMapper();</span>
+<span class="fc" id="L81">		return objectMapper;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
