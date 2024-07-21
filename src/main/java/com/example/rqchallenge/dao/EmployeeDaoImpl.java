@@ -46,7 +46,7 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 	private CloseableHttpClient httpClient;
 
 	@Autowired
-	ObjectMapper objectMapper;
+	private ObjectMapper objectMapper;
 
 	@Override
 	@Retryable(retryFor = ConnectException.class, maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 2))

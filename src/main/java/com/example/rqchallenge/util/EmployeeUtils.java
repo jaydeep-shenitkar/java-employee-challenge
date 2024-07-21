@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.stereotype.Component;
 
 import com.example.rqchallenge.constatnts.Constants;
@@ -53,6 +54,10 @@ public class EmployeeUtils {
 	}
 
 	public boolean isEmployeeInputParamValid(Map<String, Object> employeeInput) {
+
+		if (MapUtils.isEmpty(employeeInput)) {
+			throw new IllegalArgumentException(Constants.INVALID_EMPLOYEE_INPUT_ERROR_MESSAGE);
+		}
 
 		boolean isNameValid = isEmployeeNameValid(employeeInput.get(Constants.EMPLOYEE_NAME));
 		if (!isNameValid) {

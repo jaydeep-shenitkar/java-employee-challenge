@@ -20,20 +20,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Configuration
 public class EmployeeConfiguration {
 
+	private static final Logger logger = LoggerFactory.getLogger(EmployeeConfiguration.class);
+
 	@Value("${max_connetion:10}")
-	String maxConnectionProp;
+	private String maxConnectionProp;
 
 	@Value("${max_connetions_per_route:3}")
-	String maxConnectionPerRouteProp;
+	private String maxConnectionPerRouteProp;
 
 	@Value("${socket_timeout:10000}")
-	String socketTimeoutProp;
+	private String socketTimeoutProp;
 
 	@Value("${connect_timeout:6000}")
-	String connectTimeoutProp;
+	private String connectTimeoutProp;
 
 	@Value("${connection_request_timeout:10000}")
-	String connectionRequestTimeoutProp;
+	private String connectionRequestTimeoutProp;
 
 	/**
 	 * 

@@ -21,7 +21,7 @@ import com.example.rqchallenge.service.IEmployeeService;
 @RequestMapping("/employee")
 public class EmployeeController implements IEmployeeController {
 
-	Logger logger = LoggerFactory.getLogger(EmployeeController.class);
+	private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 
 	@Autowired
 	IEmployeeService employeeService;

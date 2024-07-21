@@ -10,9 +10,9 @@ import lombok.Setter;
 @Setter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class EmployeeDTO {
-	int id;
-	String employeeName;
-	int employeeSalary;
-	short employeeAge;
-	String profileImage;
+	private int id;
+	private String employeeName;
+	private int employeeSalary;
+	private short employeeAge;
+	private String profileImage;
 }

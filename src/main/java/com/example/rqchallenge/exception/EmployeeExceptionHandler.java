@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class EmployeeExceptionHandler {
 
-	Logger logger = LoggerFactory.getLogger(EmployeeExceptionHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(EmployeeExceptionHandler.class);
 
 	@ExceptionHandler(EmployeeAPIThrottledException.class)
 	@ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)

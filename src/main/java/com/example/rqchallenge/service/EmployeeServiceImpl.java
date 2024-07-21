@@ -23,24 +23,20 @@ import com.example.rqchallenge.exception.ErrorCode;
 import com.example.rqchallenge.model.Employee;
 import com.example.rqchallenge.util.EmployeeDTOMapper;
 import com.example.rqchallenge.util.EmployeeUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class EmployeeServiceImpl implements IEmployeeService {
 
-	Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
 	@Autowired
-	IEmployeeDao employeeDao;
+	private IEmployeeDao employeeDao;
 
 	@Autowired
-	EmployeeDTOMapper employeeDTOMapper;
+	private EmployeeDTOMapper employeeDTOMapper;
 
 	@Autowired
-	ObjectMapper objectMapper;
-
-	@Autowired
-	EmployeeUtils employeeUtils;
+	private EmployeeUtils employeeUtils;
 
 	@Override
 	public List<Employee> getAllEmployees() {
