@@ -10,9 +10,17 @@ import org.springframework.stereotype.Component;
 
 import com.example.rqchallenge.constatnts.Constants;
 
+/**
+ * Common Utility class contains utility methods
+ */
 @Component
 public class EmployeeUtils {
 
+	/**
+	 * @param obj
+	 * @param param
+	 * @return if input object is null or not
+	 */
 	public boolean isParamNotNull(Object obj, String param) {
 		if (Objects.isNull(obj)) {
 			return false;
@@ -20,6 +28,12 @@ public class EmployeeUtils {
 		return true;
 	}
 
+	/**
+	 * Checks if input EmployeeName is in correct format or not
+	 * 
+	 * @param obj
+	 * @return boolean
+	 */
 	public boolean isEmployeeNameValid(Object obj) {
 		if (isParamNotNull(obj, Constants.EMPLOYEE_NAME)) {
 			String name = (String) obj;
@@ -30,6 +44,12 @@ public class EmployeeUtils {
 		return false;
 	}
 
+	/**
+	 * Checks if input Employee Age is valid or not
+	 * 
+	 * @param obj
+	 * @return boolean
+	 */
 	public boolean isEmployeeAgeValid(Object obj) {
 		if (isParamNotNull(obj, Constants.EMPLOYEE_AGE)) {
 			Integer age = (Integer) obj;
@@ -41,6 +61,11 @@ public class EmployeeUtils {
 		return false;
 	}
 
+	/**
+	 * Checks if input Employee Salary is valid or not
+	 * @param obj
+	 * @return boolean
+	 */
 	public boolean isEmployeeSalaryValid(Object obj) {
 		if (isParamNotNull(obj, Constants.EMPLOYEE_SALARY)) {
 			Integer salary = (Integer) obj;
@@ -53,6 +78,12 @@ public class EmployeeUtils {
 
 	}
 
+	/**
+	 * Checks createEmployee input Map is valid or not
+	 *  
+	 * @param employeeInput
+	 * @return boolean
+	 */
 	public boolean isEmployeeInputParamValid(Map<String, Object> employeeInput) {
 
 		if (MapUtils.isEmpty(employeeInput)) {

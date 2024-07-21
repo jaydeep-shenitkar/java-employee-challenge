@@ -7,6 +7,16 @@ import org.springframework.stereotype.Component;
 import com.example.rqchallenge.dto.EmployeeDTO;
 import com.example.rqchallenge.model.Employee;
 
+/**
+ * Function class to convert incoming EmployeeDTO to response Employee.
+ * 
+ * This is particularly useful when we have multiple fields associated with
+ * Employee class in Database viz. isActive, password etc and we don't want to
+ * expose these fields to API consuming end point. In such cases we can use
+ * common Mapper functions to convert outgoing employee object to consuming end
+ * point and vice versa.
+ * 
+ */
 @Component
 public class EmployeeDTOMapper implements Function<EmployeeDTO, Employee> {
 

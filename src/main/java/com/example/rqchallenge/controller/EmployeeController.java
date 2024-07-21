@@ -1,11 +1,9 @@
 package com.example.rqchallenge.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.rqchallenge.model.Employee;
 import com.example.rqchallenge.service.IEmployeeService;
 
+/**
+ * Implementation of IEmployeeController, provides and end point to invoke all
+ * employee related APIs
+ *
+ */
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController implements IEmployeeController {
@@ -26,6 +29,11 @@ public class EmployeeController implements IEmployeeController {
 	@Autowired
 	IEmployeeService employeeService;
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.example.rqchallenge.controller.IEmployeeController#getAllEmployees()
+	 */
 	@Override
 	public ResponseEntity<List<Employee>> getAllEmployees() throws IOException {
 		logger.info("Initiating Get all Employees API");
@@ -35,6 +43,12 @@ public class EmployeeController implements IEmployeeController {
 		return responseEntity;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.example.rqchallenge.controller.IEmployeeController#
+	 * getEmployeesByNameSearch(java.lang.String)
+	 */
 	@Override
 	public ResponseEntity<List<Employee>> getEmployeesByNameSearch(String searchString) {
 		logger.info("Initiating Get Employees By Name API");
@@ -45,6 +59,13 @@ public class EmployeeController implements IEmployeeController {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.example.rqchallenge.controller.IEmployeeController#getEmployeeById(java.
+	 * lang.String)
+	 */
 	@Override
 	public ResponseEntity<Employee> getEmployeeById(String id) {
 		logger.info("Initiating Get Employees By Id API");
@@ -53,6 +74,12 @@ public class EmployeeController implements IEmployeeController {
 		return responseEntity;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.example.rqchallenge.controller.IEmployeeController#
+	 * getHighestSalaryOfEmployees()
+	 */
 	@Override
 	public ResponseEntity<Integer> getHighestSalaryOfEmployees() {
 		logger.info("Initiating Get Highest salary of employees");
@@ -61,6 +88,12 @@ public class EmployeeController implements IEmployeeController {
 		return responseEntity;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.example.rqchallenge.controller.IEmployeeController#
+	 * getTopTenHighestEarningEmployeeNames()
+	 */
 	@Override
 	public ResponseEntity<List<String>> getTopTenHighestEarningEmployeeNames() {
 		logger.info("Initiating fetching of Top 10 Highest earning employee names");
@@ -70,6 +103,13 @@ public class EmployeeController implements IEmployeeController {
 		return responseEntity;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.example.rqchallenge.controller.IEmployeeController#createEmployee(java.
+	 * util.Map)
+	 */
 	@Override
 	public ResponseEntity<Employee> createEmployee(Map<String, Object> employeeInput) {
 		logger.info("Creating new Employee from received input");
@@ -78,6 +118,13 @@ public class EmployeeController implements IEmployeeController {
 		return responseEntity;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.example.rqchallenge.controller.IEmployeeController#deleteEmployeeById(
+	 * java.lang.String)
+	 */
 	@Override
 	public ResponseEntity<String> deleteEmployeeById(String id) {
 		logger.info("Deleting Employee with Id " + id);

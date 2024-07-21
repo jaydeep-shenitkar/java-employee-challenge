@@ -36,6 +36,11 @@ import com.example.rqchallenge.exception.EmployeeAPIThrottledException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * DummyAPI based implementation of <code>IEmployeeDao</code>. Invokes various
+ * APIs provided by Dummy end point to create/delete/fetch Employees
+ *
+ */
 @Component
 @EnableRetry
 public class EmployeeDaoImpl implements IEmployeeDao {
@@ -48,6 +53,16 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 	@Autowired
 	private ObjectMapper objectMapper;
 
+	/**
+	 * 
+	 * Invokes dummy API to get list of all Employees.
+	 * Retries API if there is any issue in connection. 
+	 * @throws EmployeeAPIThrottledException In case too many requests are sent within short span of time
+	 * @throws EmployeeAPIException If there is any other exceptional condition
+	 * 
+	 * @see com.example.rqchallenge.dao.IEmployeeDao#getAllEmployees()
+	 * 
+	 */
 	@Override
 	@Retryable(retryFor = ConnectException.class, maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 2))
 	public Optional<List<EmployeeDTO>> getAllEmployees() throws IOException {
@@ -80,6 +95,14 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 		}
 	}
 
+	/** 
+	 * 
+	 * Fetches employee by Id
+	 * 
+	 * @throws EmployeeAPIThrottledException In case too many requests are sent within short span of time
+	 * @throws EmployeeAPIException If there is any other exceptional condition
+	 * @see com.example.rqchallenge.dao.IEmployeeDao#getEmployeeById(java.lang.String)
+	 */
 	@Override
 	@Retryable(retryFor = ConnectException.class, maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 2))
 	public Optional<EmployeeDTO> getEmployeeById(String id) throws IOException {
@@ -114,6 +137,15 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 		}
 	}
 
+	/**
+	 * 
+	 * Creates employee from given input
+	 * 
+	 * @throws EmployeeAPIThrottledException In case too many requests are sent within short span of time
+	 * @throws EmployeeAPIException If there is any other exceptional condition
+	 * 
+	 * @see com.example.rqchallenge.dao.IEmployeeDao#createEmployee(com.example.rqchallenge.dto.EmployeeDTO)
+	 */
 	@Override
 	@Retryable(retryFor = ConnectException.class, maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 2))
 	public EmployeeDTO createEmployee(EmployeeDTO inputEmployeeDTO) throws IOException {
@@ -155,6 +187,15 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 		}
 	}
 
+	/**
+	 * 
+	 * Deletes employee for given Id
+	 * 
+	 * @throws EmployeeAPIThrottledException In case too many requests are sent within short span of time
+	 * @throws EmployeeAPIException If there is any other exceptional condition
+	 * 
+	 * @see com.example.rqchallenge.dao.IEmployeeDao#deleteEmployeeById(java.lang.String)
+	 */
 	@Override
 	@Retryable(retryFor = ConnectException.class, maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 2))
 	public String deleteEmployeeById(String id) throws IOException {
@@ -162,14 +203,20 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 		String url = String.format(RestAPIURLs.DELETE_EMPLOYEE_BY_ID, id);
 		logger.debug("Invoking API: " + url);
 		HttpDelete httpDelete = new HttpDelete(url);
-
+		
+		/*
+		 * Note: Delete employee API always returns Status OK. So alternatively we can first invoke 
+		 * getEmployeeById API to check if employee exists or not and then we can invoke delete API.
+		 */
+		
 		try (CloseableHttpResponse response = httpClient.execute(httpDelete)) {
 			if (response.getStatusLine().getStatusCode() == HttpStatus.OK.value()) {
 				logger.info(
 						"Delete Employee By Id API returned 200 OK, Successfully deleted employee for input id " + id);
 				String responseStr = EntityUtils.toString(response.getEntity());
 				EntityUtils.consumeQuietly(response.getEntity());
-				TypeReference<HashMap<String, String>> typeRef = new TypeReference<HashMap<String, String>>() {};
+				TypeReference<HashMap<String, String>> typeRef = new TypeReference<HashMap<String, String>>() {
+				};
 
 				Map<String, String> apiResponse = objectMapper.readValue(responseStr, typeRef);
 				return apiResponse.get(Constants.MESSAGE);

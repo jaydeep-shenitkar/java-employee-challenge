@@ -1,7 +1,11 @@
 package com.example.rqchallenge.exception;
 
+/**
+ * Generic Exception class while handling Employee related API calls.
+ *
+ */
 public class EmployeeAPIException extends RuntimeException {
-	
+
 	private int errorCode;
 	private String message;
 
