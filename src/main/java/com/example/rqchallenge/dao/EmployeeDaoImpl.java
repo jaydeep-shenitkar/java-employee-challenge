@@ -73,7 +73,6 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 			if (response.getStatusLine().getStatusCode() == HttpStatus.OK.value()) {
 				logger.info("GetAllEmployees API returned 200 OK");
 				String responseStr = EntityUtils.toString(response.getEntity());
-				EntityUtils.consumeQuietly(response.getEntity());
 				EmployeeListDTOAPIResponse employeeApiResponse = objectMapper.readValue(responseStr,
 						EmployeeListDTOAPIResponse.class);
 				List<EmployeeDTO> employeeList = employeeApiResponse.getData();
@@ -85,13 +84,11 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 			} else if (response.getStatusLine().getStatusCode() == HttpStatus.TOO_MANY_REQUESTS.value()) {
 				logger.error("GetAllEmployees API throttled.");
 				String responseStr = EntityUtils.toString(response.getEntity());
-				EntityUtils.consumeQuietly(response.getEntity());
 				throw new EmployeeAPIThrottledException(HttpStatus.TOO_MANY_REQUESTS.value(), responseStr);
 			} else {
 				int responseStatus = response.getStatusLine().getStatusCode();
 				String responseStr = EntityUtils.toString(response.getEntity());
 				logger.error("Response received from getAllEmployees API : " + responseStatus);
-				EntityUtils.consumeQuietly(response.getEntity());
 				throw new EmployeeAPIException(responseStatus, responseStr);
 			}
 		}
@@ -117,7 +114,6 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 			if (response.getStatusLine().getStatusCode() == HttpStatus.OK.value()) {
 				logger.info("Get Employees By Id API returned 200 OK");
 				String responseStr = EntityUtils.toString(response.getEntity());
-				EntityUtils.consumeQuietly(response.getEntity());
 
 				EmployeeDTOAPIResponse employeeApiResponse = objectMapper.readValue(responseStr,
 						EmployeeDTOAPIResponse.class);
@@ -131,13 +127,11 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 			} else if (response.getStatusLine().getStatusCode() == HttpStatus.TOO_MANY_REQUESTS.value()) {
 				logger.error("Get Employees By Id API throttled.");
 				String responseStr = EntityUtils.toString(response.getEntity());
-				EntityUtils.consumeQuietly(response.getEntity());
 				throw new EmployeeAPIThrottledException(HttpStatus.TOO_MANY_REQUESTS.value(), responseStr);
 			} else {
 				int responseStatus = response.getStatusLine().getStatusCode();
 				String responseStr = EntityUtils.toString(response.getEntity());
 				logger.error("Response received from Get Employees By Id  API : " + responseStatus);
-				EntityUtils.consumeQuietly(response.getEntity());
 				throw new EmployeeAPIException(responseStatus, responseStr);
 			}
 		}
@@ -171,7 +165,6 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 			if (response.getStatusLine().getStatusCode() == HttpStatus.OK.value()) {
 				logger.info("Create Employee API returned 200 OK");
 				String responseStr = EntityUtils.toString(response.getEntity());
-				EntityUtils.consumeQuietly(response.getEntity());
 
 				EmployeeDTOAPIResponse employeeApiResponse = objectMapper.readValue(responseStr,
 						EmployeeDTOAPIResponse.class);
@@ -185,13 +178,11 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 			} else if (response.getStatusLine().getStatusCode() == HttpStatus.TOO_MANY_REQUESTS.value()) {
 				logger.error("Create Employee  API throttled.");
 				String responseStr = EntityUtils.toString(response.getEntity());
-				EntityUtils.consumeQuietly(response.getEntity());
 				throw new EmployeeAPIThrottledException(HttpStatus.TOO_MANY_REQUESTS.value(), responseStr);
 			} else {
 				int responseStatus = response.getStatusLine().getStatusCode();
 				String responseStr = EntityUtils.toString(response.getEntity());
 				logger.error("Response received from Create Employee API : " + responseStatus);
-				EntityUtils.consumeQuietly(response.getEntity());
 				throw new EmployeeAPIException(responseStatus, responseStr);
 			}
 		}
@@ -224,7 +215,6 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 				logger.info(
 						"Delete Employee By Id API returned 200 OK, Successfully deleted employee for input id " + id);
 				String responseStr = EntityUtils.toString(response.getEntity());
-				EntityUtils.consumeQuietly(response.getEntity());
 				TypeReference<HashMap<String, String>> typeRef = new TypeReference<HashMap<String, String>>() {
 				};
 
@@ -238,13 +228,11 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 			} else if (response.getStatusLine().getStatusCode() == HttpStatus.TOO_MANY_REQUESTS.value()) {
 				logger.error("Delete Employee By Id API throttled.");
 				String responseStr = EntityUtils.toString(response.getEntity());
-				EntityUtils.consumeQuietly(response.getEntity());
 				throw new EmployeeAPIThrottledException(HttpStatus.TOO_MANY_REQUESTS.value(), responseStr);
 			} else {
 				int responseStatus = response.getStatusLine().getStatusCode();
 				String responseStr = EntityUtils.toString(response.getEntity());
 				logger.error("Response received from Delete Employee By Id  API : " + responseStatus);
-				EntityUtils.consumeQuietly(response.getEntity());
 				throw new EmployeeAPIException(responseStatus, responseStr);
 			}
 		}
