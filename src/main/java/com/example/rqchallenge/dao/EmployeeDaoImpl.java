@@ -26,8 +26,7 @@ import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 
-import com.example.rqchallenge.constatnts.Constants;
-import com.example.rqchallenge.constatnts.RestAPIURLs;
+import com.example.rqchallenge.constants.Constants;
 import com.example.rqchallenge.dto.EmployeeDTO;
 import com.example.rqchallenge.dto.EmployeeDTOAPIResponse;
 import com.example.rqchallenge.dto.EmployeeListDTOAPIResponse;
@@ -79,7 +78,10 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 						EmployeeListDTOAPIResponse.class);
 				List<EmployeeDTO> employeeList = employeeApiResponse.getData();
 				return Optional.ofNullable(employeeList);
-
+				/*
+				 * Added explicit handling for Error code 429 because it is observed that this particular 
+				 * exception is thrown multiple times 
+				 */
 			} else if (response.getStatusLine().getStatusCode() == HttpStatus.TOO_MANY_REQUESTS.value()) {
 				logger.error("GetAllEmployees API throttled.");
 				String responseStr = EntityUtils.toString(response.getEntity());
@@ -122,6 +124,10 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 				EmployeeDTO employeeDTO = employeeApiResponse.getData();
 				return Optional.ofNullable(employeeDTO);
 
+				/*
+				 * Added explicit handling for Error code 429 because it is observed that this particular 
+				 * exception is thrown multiple times 
+				 */
 			} else if (response.getStatusLine().getStatusCode() == HttpStatus.TOO_MANY_REQUESTS.value()) {
 				logger.error("Get Employees By Id API throttled.");
 				String responseStr = EntityUtils.toString(response.getEntity());
@@ -172,6 +178,10 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 				EmployeeDTO employeeDTO = employeeApiResponse.getData();
 				return employeeDTO;
 
+				/*
+				 * Added explicit handling for Error code 429 because it is observed that this particular 
+				 * exception is thrown multiple times 
+				 */
 			} else if (response.getStatusLine().getStatusCode() == HttpStatus.TOO_MANY_REQUESTS.value()) {
 				logger.error("Create Employee  API throttled.");
 				String responseStr = EntityUtils.toString(response.getEntity());
@@ -221,6 +231,10 @@ public class EmployeeDaoImpl implements IEmployeeDao {
 				Map<String, String> apiResponse = objectMapper.readValue(responseStr, typeRef);
 				return apiResponse.get(Constants.MESSAGE);
 
+				/*
+				 * Added explicit handling for Error code 429 because it is observed that this particular 
+				 * exception is thrown multiple times 
+				 */
 			} else if (response.getStatusLine().getStatusCode() == HttpStatus.TOO_MANY_REQUESTS.value()) {
 				logger.error("Delete Employee By Id API throttled.");
 				String responseStr = EntityUtils.toString(response.getEntity());

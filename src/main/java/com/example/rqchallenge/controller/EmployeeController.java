@@ -38,9 +38,7 @@ public class EmployeeController implements IEmployeeController {
 	public ResponseEntity<List<Employee>> getAllEmployees() throws IOException {
 		logger.info("Initiating Get all Employees API");
 		List<Employee> allEmployeesList = employeeService.getAllEmployees();
-		ResponseEntity<List<Employee>> responseEntity = new ResponseEntity<List<Employee>>(allEmployeesList,
-				HttpStatus.OK);
-		return responseEntity;
+		return ResponseEntity.ok(allEmployeesList);
 	}
 
 	/*
@@ -53,10 +51,7 @@ public class EmployeeController implements IEmployeeController {
 	public ResponseEntity<List<Employee>> getEmployeesByNameSearch(String searchString) {
 		logger.info("Initiating Get Employees By Name API");
 		List<Employee> searchedEmployeesList = employeeService.getEmployeesByNameSearch(searchString);
-		ResponseEntity<List<Employee>> responseEntity = new ResponseEntity<List<Employee>>(searchedEmployeesList,
-				HttpStatus.OK);
-		return responseEntity;
-
+		return ResponseEntity.ok(searchedEmployeesList);
 	}
 
 	/*
@@ -70,8 +65,7 @@ public class EmployeeController implements IEmployeeController {
 	public ResponseEntity<Employee> getEmployeeById(String id) {
 		logger.info("Initiating Get Employees By Id API");
 		Employee employee = employeeService.getEmployeeById(id);
-		ResponseEntity<Employee> responseEntity = new ResponseEntity<Employee>(employee, HttpStatus.OK);
-		return responseEntity;
+		return ResponseEntity.ok(employee);
 	}
 
 	/*
@@ -84,8 +78,7 @@ public class EmployeeController implements IEmployeeController {
 	public ResponseEntity<Integer> getHighestSalaryOfEmployees() {
 		logger.info("Initiating Get Highest salary of employees");
 		Integer highestSalary = employeeService.getHighestSalaryOfEmployees();
-		ResponseEntity<Integer> responseEntity = new ResponseEntity<Integer>(highestSalary, HttpStatus.OK);
-		return responseEntity;
+		return ResponseEntity.ok(highestSalary);
 	}
 
 	/*
@@ -98,9 +91,7 @@ public class EmployeeController implements IEmployeeController {
 	public ResponseEntity<List<String>> getTopTenHighestEarningEmployeeNames() {
 		logger.info("Initiating fetching of Top 10 Highest earning employee names");
 		List<String> topTenHighestEarningEmpNames = employeeService.getTopNHighestEarningEmployeeNames(10);
-		ResponseEntity<List<String>> responseEntity = new ResponseEntity<List<String>>(topTenHighestEarningEmpNames,
-				HttpStatus.OK);
-		return responseEntity;
+		return ResponseEntity.ok(topTenHighestEarningEmpNames);
 	}
 
 	/*
@@ -114,8 +105,7 @@ public class EmployeeController implements IEmployeeController {
 	public ResponseEntity<Employee> createEmployee(Map<String, Object> employeeInput) {
 		logger.info("Creating new Employee from received input");
 		Employee createdEmployee = employeeService.createEmployee(employeeInput);
-		ResponseEntity<Employee> responseEntity = new ResponseEntity<Employee>(createdEmployee, HttpStatus.CREATED);
-		return responseEntity;
+		return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);
 	}
 
 	/*
@@ -129,8 +119,12 @@ public class EmployeeController implements IEmployeeController {
 	public ResponseEntity<String> deleteEmployeeById(String id) {
 		logger.info("Deleting Employee with Id " + id);
 		String message = employeeService.deleteEmployeeById(id);
-		ResponseEntity<String> responseEntity = new ResponseEntity<String>(message, HttpStatus.OK);
-		return responseEntity;
+
+		/*
+		 * Note: We can also send HttpStatus.NO_CONTENT in case of delete.
+		 * Since API expects a String message, sending Status:200 with response message.
+		 */
+		return ResponseEntity.ok(message);
 	}
 
 }

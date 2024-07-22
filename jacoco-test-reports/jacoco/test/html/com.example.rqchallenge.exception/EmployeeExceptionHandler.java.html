@@ -10,43 +10,69 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/**
+ * 
+ * Common exception handler class.
+ *
+ */
 @RestControllerAdvice
-<span class="fc" id="L14">public class EmployeeExceptionHandler {</span>
+<span class="fc" id="L19">public class EmployeeExceptionHandler {</span>
 
-<span class="fc" id="L16">	private static final Logger logger = LoggerFactory.getLogger(EmployeeExceptionHandler.class);</span>
+<span class="fc" id="L21">	private static final Logger logger = LoggerFactory.getLogger(EmployeeExceptionHandler.class);</span>
 
+	/**
+	 * 
+	 * Handles Throttling Exception
+	 * @param ex
+	 * @return
+	 */
 	@ExceptionHandler(EmployeeAPIThrottledException.class)
 	@ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
 	public ResponseEntity&lt;String&gt; handleThrottlingException(EmployeeAPIThrottledException ex) {
-<span class="nc" id="L21">		return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(ex.getMessage());</span>
+<span class="nc" id="L32">		return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(ex.getMessage());</span>
 	}
 
+	/**
+	 * Handles generic Employee API related exceptions
+	 * @param ex
+	 * @return
+	 */
 	@ExceptionHandler(EmployeeAPIException.class)
 	public ResponseEntity&lt;APIErrorResponse&gt; handleEmployeeAPiException(EmployeeAPIException ex) {
-<span class="nc" id="L26">		APIErrorResponse res = new APIErrorResponse();</span>
-<span class="nc" id="L27">		res.setTimeStamp(new Date().getTime());</span>
-<span class="nc" id="L28">		res.setErrorCode(ex.getErrorCode());</span>
-<span class="nc" id="L29">		res.setMessage(ex.getMessage());</span>
-<span class="nc" id="L30">		return ResponseEntity.status(ex.getErrorCode()).body(res);</span>
+<span class="nc" id="L42">		APIErrorResponse res = new APIErrorResponse();</span>
+<span class="nc" id="L43">		res.setTimeStamp(new Date().getTime());</span>
+<span class="nc" id="L44">		res.setErrorCode(ex.getErrorCode());</span>
+<span class="nc" id="L45">		res.setMessage(ex.getMessage());</span>
+<span class="nc" id="L46">		return ResponseEntity.status(ex.getErrorCode()).body(res);</span>
 	}
 
+	/**
+	 * Handles any other exceptional condition which is not caught
+	 * @param ex
+	 * @return
+	 */
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity&lt;APIErrorResponse&gt; handleException(Exception ex) {
-<span class="nc" id="L35">		logger.error(&quot;Exception occurred while processing API request &quot;, ex);</span>
-<span class="nc" id="L36">		APIErrorResponse res = new APIErrorResponse();</span>
-<span class="nc" id="L37">		res.setTimeStamp(new Date().getTime());</span>
-<span class="nc" id="L38">		res.setErrorCode(HttpStatus.INTERNAL_SERVER_ERROR.value());</span>
-<span class="nc" id="L39">		res.setMessage(ex.getMessage());</span>
-<span class="nc" id="L40">		return ResponseEntity.internalServerError().body(res);</span>
+<span class="nc" id="L56">		logger.error(&quot;Exception occurred while processing API request &quot;, ex);</span>
+<span class="nc" id="L57">		APIErrorResponse res = new APIErrorResponse();</span>
+<span class="nc" id="L58">		res.setTimeStamp(new Date().getTime());</span>
+<span class="nc" id="L59">		res.setErrorCode(HttpStatus.INTERNAL_SERVER_ERROR.value());</span>
+<span class="nc" id="L60">		res.setMessage(ex.getMessage());</span>
+<span class="nc" id="L61">		return ResponseEntity.internalServerError().body(res);</span>
 	}
 
+	/**
+	 * Handles invalid input parameters in case of creating Employee
+	 * @param ex
+	 * @return
+	 */
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity&lt;APIErrorResponse&gt; handleIllegalArgumentException(IllegalArgumentException ex) {
-<span class="nc" id="L45">		APIErrorResponse res = new APIErrorResponse();</span>
-<span class="nc" id="L46">		res.setErrorCode(HttpStatus.BAD_REQUEST.value());</span>
-<span class="nc" id="L47">		res.setTimeStamp(new Date().getTime());</span>
-<span class="nc" id="L48">		res.setMessage(ex.getMessage());</span>
-<span class="nc" id="L49">		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);</span>
+<span class="nc" id="L71">		APIErrorResponse res = new APIErrorResponse();</span>
+<span class="nc" id="L72">		res.setErrorCode(HttpStatus.BAD_REQUEST.value());</span>
+<span class="nc" id="L73">		res.setTimeStamp(new Date().getTime());</span>
+<span class="nc" id="L74">		res.setMessage(ex.getMessage());</span>
+<span class="nc" id="L75">		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);</span>
 	}
 
 }

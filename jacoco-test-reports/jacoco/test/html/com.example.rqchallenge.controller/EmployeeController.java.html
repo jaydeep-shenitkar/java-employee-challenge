@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmployeeController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">rqChallenge</a> &gt; <a href="index.source.html" class="el_package">com.example.rqchallenge.controller</a> &gt; <span class="el_source">EmployeeController.java</span></div><h1>EmployeeController.java</h1><pre class="source lang-java linenums">package com.example.rqchallenge.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,73 +15,116 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.rqchallenge.model.Employee;
 import com.example.rqchallenge.service.IEmployeeService;
 
+/**
+ * Implementation of IEmployeeController, provides and end point to invoke all
+ * employee related APIs
+ *
+ */
 @RestController
 @RequestMapping(&quot;/employee&quot;)
-<span class="fc" id="L22">public class EmployeeController implements IEmployeeController {</span>
+<span class="fc" id="L25">public class EmployeeController implements IEmployeeController {</span>
 
-<span class="fc" id="L24">	private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);</span>
+<span class="fc" id="L27">	private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);</span>
 
 	@Autowired
 	IEmployeeService employeeService;
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.example.rqchallenge.controller.IEmployeeController#getAllEmployees()
+	 */
 	@Override
 	public ResponseEntity&lt;List&lt;Employee&gt;&gt; getAllEmployees() throws IOException {
-<span class="fc" id="L31">		logger.info(&quot;Initiating Get all Employees API&quot;);</span>
-<span class="fc" id="L32">		List&lt;Employee&gt; allEmployeesList = employeeService.getAllEmployees();</span>
-<span class="fc" id="L33">		ResponseEntity&lt;List&lt;Employee&gt;&gt; responseEntity = new ResponseEntity&lt;List&lt;Employee&gt;&gt;(allEmployeesList,</span>
-				HttpStatus.OK);
-<span class="fc" id="L35">		return responseEntity;</span>
+<span class="fc" id="L39">		logger.info(&quot;Initiating Get all Employees API&quot;);</span>
+<span class="fc" id="L40">		List&lt;Employee&gt; allEmployeesList = employeeService.getAllEmployees();</span>
+<span class="fc" id="L41">		return ResponseEntity.ok(allEmployeesList);</span>
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.example.rqchallenge.controller.IEmployeeController#
+	 * getEmployeesByNameSearch(java.lang.String)
+	 */
 	@Override
 	public ResponseEntity&lt;List&lt;Employee&gt;&gt; getEmployeesByNameSearch(String searchString) {
-<span class="fc" id="L40">		logger.info(&quot;Initiating Get Employees By Name API&quot;);</span>
-<span class="fc" id="L41">		List&lt;Employee&gt; searchedEmployeesList = employeeService.getEmployeesByNameSearch(searchString);</span>
-<span class="fc" id="L42">		ResponseEntity&lt;List&lt;Employee&gt;&gt; responseEntity = new ResponseEntity&lt;List&lt;Employee&gt;&gt;(searchedEmployeesList,</span>
-				HttpStatus.OK);
-<span class="fc" id="L44">		return responseEntity;</span>
-
+<span class="fc" id="L52">		logger.info(&quot;Initiating Get Employees By Name API&quot;);</span>
+<span class="fc" id="L53">		List&lt;Employee&gt; searchedEmployeesList = employeeService.getEmployeesByNameSearch(searchString);</span>
+<span class="fc" id="L54">		return ResponseEntity.ok(searchedEmployeesList);</span>
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.example.rqchallenge.controller.IEmployeeController#getEmployeeById(java.
+	 * lang.String)
+	 */
 	@Override
 	public ResponseEntity&lt;Employee&gt; getEmployeeById(String id) {
-<span class="fc" id="L50">		logger.info(&quot;Initiating Get Employees By Id API&quot;);</span>
-<span class="fc" id="L51">		Employee employee = employeeService.getEmployeeById(id);</span>
-<span class="fc" id="L52">		ResponseEntity&lt;Employee&gt; responseEntity = new ResponseEntity&lt;Employee&gt;(employee, HttpStatus.OK);</span>
-<span class="fc" id="L53">		return responseEntity;</span>
+<span class="fc" id="L66">		logger.info(&quot;Initiating Get Employees By Id API&quot;);</span>
+<span class="fc" id="L67">		Employee employee = employeeService.getEmployeeById(id);</span>
+<span class="fc" id="L68">		return ResponseEntity.ok(employee);</span>
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.example.rqchallenge.controller.IEmployeeController#
+	 * getHighestSalaryOfEmployees()
+	 */
 	@Override
 	public ResponseEntity&lt;Integer&gt; getHighestSalaryOfEmployees() {
-<span class="fc" id="L58">		logger.info(&quot;Initiating Get Highest salary of employees&quot;);</span>
-<span class="fc" id="L59">		Integer highestSalary = employeeService.getHighestSalaryOfEmployees();</span>
-<span class="fc" id="L60">		ResponseEntity&lt;Integer&gt; responseEntity = new ResponseEntity&lt;Integer&gt;(highestSalary, HttpStatus.OK);</span>
-<span class="fc" id="L61">		return responseEntity;</span>
+<span class="fc" id="L79">		logger.info(&quot;Initiating Get Highest salary of employees&quot;);</span>
+<span class="fc" id="L80">		Integer highestSalary = employeeService.getHighestSalaryOfEmployees();</span>
+<span class="fc" id="L81">		return ResponseEntity.ok(highestSalary);</span>
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.example.rqchallenge.controller.IEmployeeController#
+	 * getTopTenHighestEarningEmployeeNames()
+	 */
 	@Override
 	public ResponseEntity&lt;List&lt;String&gt;&gt; getTopTenHighestEarningEmployeeNames() {
-<span class="fc" id="L66">		logger.info(&quot;Initiating fetching of Top 10 Highest earning employee names&quot;);</span>
-<span class="fc" id="L67">		List&lt;String&gt; topTenHighestEarningEmpNames = employeeService.getTopNHighestEarningEmployeeNames(10);</span>
-<span class="fc" id="L68">		ResponseEntity&lt;List&lt;String&gt;&gt; responseEntity = new ResponseEntity&lt;List&lt;String&gt;&gt;(topTenHighestEarningEmpNames,</span>
-				HttpStatus.OK);
-<span class="fc" id="L70">		return responseEntity;</span>
+<span class="fc" id="L92">		logger.info(&quot;Initiating fetching of Top 10 Highest earning employee names&quot;);</span>
+<span class="fc" id="L93">		List&lt;String&gt; topTenHighestEarningEmpNames = employeeService.getTopNHighestEarningEmployeeNames(10);</span>
+<span class="fc" id="L94">		return ResponseEntity.ok(topTenHighestEarningEmpNames);</span>
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.example.rqchallenge.controller.IEmployeeController#createEmployee(java.
+	 * util.Map)
+	 */
 	@Override
 	public ResponseEntity&lt;Employee&gt; createEmployee(Map&lt;String, Object&gt; employeeInput) {
-<span class="fc" id="L75">		logger.info(&quot;Creating new Employee from received input&quot;);</span>
-<span class="fc" id="L76">		Employee createdEmployee = employeeService.createEmployee(employeeInput);</span>
-<span class="fc" id="L77">		ResponseEntity&lt;Employee&gt; responseEntity = new ResponseEntity&lt;Employee&gt;(createdEmployee, HttpStatus.CREATED);</span>
-<span class="fc" id="L78">		return responseEntity;</span>
+<span class="fc" id="L106">		logger.info(&quot;Creating new Employee from received input&quot;);</span>
+<span class="fc" id="L107">		Employee createdEmployee = employeeService.createEmployee(employeeInput);</span>
+<span class="fc" id="L108">		return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);</span>
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.example.rqchallenge.controller.IEmployeeController#deleteEmployeeById(
+	 * java.lang.String)
+	 */
 	@Override
 	public ResponseEntity&lt;String&gt; deleteEmployeeById(String id) {
-<span class="fc" id="L83">		logger.info(&quot;Deleting Employee with Id &quot; + id);</span>
-<span class="fc" id="L84">		String message = employeeService.deleteEmployeeById(id);</span>
-<span class="fc" id="L85">		ResponseEntity&lt;String&gt; responseEntity = new ResponseEntity&lt;String&gt;(message, HttpStatus.OK);</span>
-<span class="fc" id="L86">		return responseEntity;</span>
+<span class="fc" id="L120">		logger.info(&quot;Deleting Employee with Id &quot; + id);</span>
+<span class="fc" id="L121">		String message = employeeService.deleteEmployeeById(id);</span>
+
+		/*
+		 * Note: We can also send HttpStatus.NO_CONTENT in case of delete.
+		 * Since API expects a String message, sending Status:200 with response message.
+		 */
+<span class="fc" id="L127">		return ResponseEntity.ok(message);</span>
 	}
 
 }

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.example.rqchallenge.constatnts.Constants;
+import com.example.rqchallenge.constants.Constants;
 
 @SpringBootTest
 public class EmployeeUtilsTest {

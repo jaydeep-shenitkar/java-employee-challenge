@@ -8,7 +8,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.stereotype.Component;
 
-import com.example.rqchallenge.constatnts.Constants;
+import com.example.rqchallenge.constants.Constants;
+import com.example.rqchallenge.exception.ErrorMessages;
 
 /**
  * Common Utility class contains utility methods
@@ -87,22 +88,22 @@ public class EmployeeUtils {
 	public boolean isEmployeeInputParamValid(Map<String, Object> employeeInput) {
 
 		if (MapUtils.isEmpty(employeeInput)) {
-			throw new IllegalArgumentException(Constants.INVALID_EMPLOYEE_INPUT_ERROR_MESSAGE);
+			throw new IllegalArgumentException(ErrorMessages.INVALID_EMPLOYEE_INPUT_ERROR_MESSAGE);
 		}
 
 		boolean isNameValid = isEmployeeNameValid(employeeInput.get(Constants.EMPLOYEE_NAME));
 		if (!isNameValid) {
-			throw new IllegalArgumentException(Constants.INVALID_EMPLOYEE_NAME_ERROR_MESSAGE);
+			throw new IllegalArgumentException(ErrorMessages.INVALID_EMPLOYEE_NAME_ERROR_MESSAGE);
 		}
 
 		boolean isAgeValid = isEmployeeAgeValid(employeeInput.get(Constants.EMPLOYEE_AGE));
 		if (!isAgeValid) {
-			throw new IllegalArgumentException(Constants.INVALID_EMPLOYEE_AGE_ERROR_MESSAGE);
+			throw new IllegalArgumentException(ErrorMessages.INVALID_EMPLOYEE_AGE_ERROR_MESSAGE);
 		}
 
 		boolean isSalaryValid = isEmployeeSalaryValid(employeeInput.get(Constants.EMPLOYEE_SALARY));
 		if (!isSalaryValid) {
-			throw new IllegalArgumentException(Constants.INVALID_EMPLOYEE_SALARY_ERROR_MESSAGE);
+			throw new IllegalArgumentException(ErrorMessages.INVALID_EMPLOYEE_SALARY_ERROR_MESSAGE);
 		}
 		return true;
 	}

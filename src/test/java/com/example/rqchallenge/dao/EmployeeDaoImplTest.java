@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.apache.http.HttpEntity;
@@ -62,7 +61,7 @@ public class EmployeeDaoImplTest {
 	public void setUp() throws ClientProtocolException, IOException {
 		MockitoAnnotations.openMocks(this);
 	}
-
+	
 	@Test
 	public void testGetAllEmployees() throws IOException {
 

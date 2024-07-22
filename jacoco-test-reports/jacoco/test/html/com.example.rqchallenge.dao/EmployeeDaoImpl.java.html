@@ -26,8 +26,7 @@ import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 
-import com.example.rqchallenge.constatnts.Constants;
-import com.example.rqchallenge.constatnts.RestAPIURLs;
+import com.example.rqchallenge.constants.Constants;
 import com.example.rqchallenge.dto.EmployeeDTO;
 import com.example.rqchallenge.dto.EmployeeDTOAPIResponse;
 import com.example.rqchallenge.dto.EmployeeListDTOAPIResponse;
@@ -36,11 +35,16 @@ import com.example.rqchallenge.exception.EmployeeAPIThrottledException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * DummyAPI based implementation of &lt;code&gt;IEmployeeDao&lt;/code&gt;. Invokes various
+ * APIs provided by Dummy end point to create/delete/fetch Employees
+ *
+ */
 @Component
 @EnableRetry
-<span class="fc" id="L41">public class EmployeeDaoImpl implements IEmployeeDao {</span>
+<span class="fc" id="L45">public class EmployeeDaoImpl implements IEmployeeDao {</span>
 
-<span class="fc" id="L43">	private static final Logger logger = LoggerFactory.getLogger(EmployeeDaoImpl.class);</span>
+<span class="fc" id="L47">	private static final Logger logger = LoggerFactory.getLogger(EmployeeDaoImpl.class);</span>
 
 	@Autowired
 	private CloseableHttpClient httpClient;
@@ -48,143 +52,200 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 	@Autowired
 	private ObjectMapper objectMapper;
 
+	/**
+	 * 
+	 * Invokes dummy API to get list of all Employees.
+	 * Retries API if there is any issue in connection. 
+	 * @throws EmployeeAPIThrottledException In case too many requests are sent within short span of time
+	 * @throws EmployeeAPIException If there is any other exceptional condition
+	 * 
+	 * @see com.example.rqchallenge.dao.IEmployeeDao#getAllEmployees()
+	 * 
+	 */
 	@Override
 	@Retryable(retryFor = ConnectException.class, maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 2))
 	public Optional&lt;List&lt;EmployeeDTO&gt;&gt; getAllEmployees() throws IOException {
 
-<span class="fc" id="L55">		logger.debug(&quot;Invoking API: &quot; + RestAPIURLs.GET_ALL_EMPLOYEES);</span>
+<span class="fc" id="L69">		logger.debug(&quot;Invoking API: &quot; + RestAPIURLs.GET_ALL_EMPLOYEES);</span>
 
-<span class="fc" id="L57">		HttpGet httpGet = new HttpGet(RestAPIURLs.GET_ALL_EMPLOYEES);</span>
-<span class="fc" id="L58">		try (CloseableHttpResponse response = httpClient.execute(httpGet)) {</span>
-<span class="fc bfc" id="L59" title="All 2 branches covered.">			if (response.getStatusLine().getStatusCode() == HttpStatus.OK.value()) {</span>
-<span class="fc" id="L60">				logger.info(&quot;GetAllEmployees API returned 200 OK&quot;);</span>
-<span class="fc" id="L61">				String responseStr = EntityUtils.toString(response.getEntity());</span>
-<span class="fc" id="L62">				EntityUtils.consumeQuietly(response.getEntity());</span>
-<span class="fc" id="L63">				EmployeeListDTOAPIResponse employeeApiResponse = objectMapper.readValue(responseStr,</span>
-						EmployeeListDTOAPIResponse.class);
-<span class="fc" id="L65">				List&lt;EmployeeDTO&gt; employeeList = employeeApiResponse.getData();</span>
-<span class="fc" id="L66">				return Optional.ofNullable(employeeList);</span>
-
-<span class="fc bfc" id="L68" title="All 2 branches covered.">			} else if (response.getStatusLine().getStatusCode() == HttpStatus.TOO_MANY_REQUESTS.value()) {</span>
-<span class="fc" id="L69">				logger.error(&quot;GetAllEmployees API throttled.&quot;);</span>
-<span class="fc" id="L70">				String responseStr = EntityUtils.toString(response.getEntity());</span>
-<span class="fc" id="L71">				EntityUtils.consumeQuietly(response.getEntity());</span>
-<span class="fc" id="L72">				throw new EmployeeAPIThrottledException(HttpStatus.TOO_MANY_REQUESTS.value(), responseStr);</span>
-			} else {
-<span class="fc" id="L74">				int responseStatus = response.getStatusLine().getStatusCode();</span>
+<span class="fc" id="L71">		HttpGet httpGet = new HttpGet(RestAPIURLs.GET_ALL_EMPLOYEES);</span>
+<span class="fc" id="L72">		try (CloseableHttpResponse response = httpClient.execute(httpGet)) {</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">			if (response.getStatusLine().getStatusCode() == HttpStatus.OK.value()) {</span>
+<span class="fc" id="L74">				logger.info(&quot;GetAllEmployees API returned 200 OK&quot;);</span>
 <span class="fc" id="L75">				String responseStr = EntityUtils.toString(response.getEntity());</span>
-<span class="fc" id="L76">				logger.error(&quot;Response received from getAllEmployees API : &quot; + responseStatus);</span>
-<span class="fc" id="L77">				EntityUtils.consumeQuietly(response.getEntity());</span>
-<span class="fc" id="L78">				throw new EmployeeAPIException(responseStatus, responseStr);</span>
+<span class="fc" id="L76">				EntityUtils.consumeQuietly(response.getEntity());</span>
+<span class="fc" id="L77">				EmployeeListDTOAPIResponse employeeApiResponse = objectMapper.readValue(responseStr,</span>
+						EmployeeListDTOAPIResponse.class);
+<span class="fc" id="L79">				List&lt;EmployeeDTO&gt; employeeList = employeeApiResponse.getData();</span>
+<span class="fc" id="L80">				return Optional.ofNullable(employeeList);</span>
+				/*
+				 * Added explicit handling for Error code 429 because it is observed that this particular 
+				 * exception is thrown multiple times 
+				 */
+<span class="fc bfc" id="L85" title="All 2 branches covered.">			} else if (response.getStatusLine().getStatusCode() == HttpStatus.TOO_MANY_REQUESTS.value()) {</span>
+<span class="fc" id="L86">				logger.error(&quot;GetAllEmployees API throttled.&quot;);</span>
+<span class="fc" id="L87">				String responseStr = EntityUtils.toString(response.getEntity());</span>
+<span class="fc" id="L88">				EntityUtils.consumeQuietly(response.getEntity());</span>
+<span class="fc" id="L89">				throw new EmployeeAPIThrottledException(HttpStatus.TOO_MANY_REQUESTS.value(), responseStr);</span>
+			} else {
+<span class="fc" id="L91">				int responseStatus = response.getStatusLine().getStatusCode();</span>
+<span class="fc" id="L92">				String responseStr = EntityUtils.toString(response.getEntity());</span>
+<span class="fc" id="L93">				logger.error(&quot;Response received from getAllEmployees API : &quot; + responseStatus);</span>
+<span class="fc" id="L94">				EntityUtils.consumeQuietly(response.getEntity());</span>
+<span class="fc" id="L95">				throw new EmployeeAPIException(responseStatus, responseStr);</span>
 			}
 		}
 	}
 
+	/** 
+	 * 
+	 * Fetches employee by Id
+	 * 
+	 * @throws EmployeeAPIThrottledException In case too many requests are sent within short span of time
+	 * @throws EmployeeAPIException If there is any other exceptional condition
+	 * @see com.example.rqchallenge.dao.IEmployeeDao#getEmployeeById(java.lang.String)
+	 */
 	@Override
 	@Retryable(retryFor = ConnectException.class, maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 2))
 	public Optional&lt;EmployeeDTO&gt; getEmployeeById(String id) throws IOException {
 
-<span class="fc" id="L87">		String url = String.format(RestAPIURLs.GET_EMPLOYEE_BY_ID, id);</span>
-<span class="fc" id="L88">		logger.debug(&quot;Invoking API: &quot; + url);</span>
-<span class="fc" id="L89">		HttpGet httpGet = new HttpGet(url);</span>
+<span class="fc" id="L112">		String url = String.format(RestAPIURLs.GET_EMPLOYEE_BY_ID, id);</span>
+<span class="fc" id="L113">		logger.debug(&quot;Invoking API: &quot; + url);</span>
+<span class="fc" id="L114">		HttpGet httpGet = new HttpGet(url);</span>
 
-<span class="fc" id="L91">		try (CloseableHttpResponse response = httpClient.execute(httpGet)) {</span>
-<span class="fc bfc" id="L92" title="All 2 branches covered.">			if (response.getStatusLine().getStatusCode() == HttpStatus.OK.value()) {</span>
-<span class="fc" id="L93">				logger.info(&quot;Get Employees By Id API returned 200 OK&quot;);</span>
-<span class="fc" id="L94">				String responseStr = EntityUtils.toString(response.getEntity());</span>
-<span class="fc" id="L95">				EntityUtils.consumeQuietly(response.getEntity());</span>
+<span class="fc" id="L116">		try (CloseableHttpResponse response = httpClient.execute(httpGet)) {</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">			if (response.getStatusLine().getStatusCode() == HttpStatus.OK.value()) {</span>
+<span class="fc" id="L118">				logger.info(&quot;Get Employees By Id API returned 200 OK&quot;);</span>
+<span class="fc" id="L119">				String responseStr = EntityUtils.toString(response.getEntity());</span>
+<span class="fc" id="L120">				EntityUtils.consumeQuietly(response.getEntity());</span>
 
-<span class="fc" id="L97">				EmployeeDTOAPIResponse employeeApiResponse = objectMapper.readValue(responseStr,</span>
+<span class="fc" id="L122">				EmployeeDTOAPIResponse employeeApiResponse = objectMapper.readValue(responseStr,</span>
 						EmployeeDTOAPIResponse.class);
-<span class="fc" id="L99">				EmployeeDTO employeeDTO = employeeApiResponse.getData();</span>
-<span class="fc" id="L100">				return Optional.ofNullable(employeeDTO);</span>
+<span class="fc" id="L124">				EmployeeDTO employeeDTO = employeeApiResponse.getData();</span>
+<span class="fc" id="L125">				return Optional.ofNullable(employeeDTO);</span>
 
-<span class="fc bfc" id="L102" title="All 2 branches covered.">			} else if (response.getStatusLine().getStatusCode() == HttpStatus.TOO_MANY_REQUESTS.value()) {</span>
-<span class="fc" id="L103">				logger.error(&quot;Get Employees By Id API throttled.&quot;);</span>
-<span class="fc" id="L104">				String responseStr = EntityUtils.toString(response.getEntity());</span>
-<span class="fc" id="L105">				EntityUtils.consumeQuietly(response.getEntity());</span>
-<span class="fc" id="L106">				throw new EmployeeAPIThrottledException(HttpStatus.TOO_MANY_REQUESTS.value(), responseStr);</span>
+				/*
+				 * Added explicit handling for Error code 429 because it is observed that this particular 
+				 * exception is thrown multiple times 
+				 */
+<span class="fc bfc" id="L131" title="All 2 branches covered.">			} else if (response.getStatusLine().getStatusCode() == HttpStatus.TOO_MANY_REQUESTS.value()) {</span>
+<span class="fc" id="L132">				logger.error(&quot;Get Employees By Id API throttled.&quot;);</span>
+<span class="fc" id="L133">				String responseStr = EntityUtils.toString(response.getEntity());</span>
+<span class="fc" id="L134">				EntityUtils.consumeQuietly(response.getEntity());</span>
+<span class="fc" id="L135">				throw new EmployeeAPIThrottledException(HttpStatus.TOO_MANY_REQUESTS.value(), responseStr);</span>
 			} else {
-<span class="fc" id="L108">				int responseStatus = response.getStatusLine().getStatusCode();</span>
-<span class="fc" id="L109">				String responseStr = EntityUtils.toString(response.getEntity());</span>
-<span class="fc" id="L110">				logger.error(&quot;Response received from Get Employees By Id  API : &quot; + responseStatus);</span>
-<span class="fc" id="L111">				EntityUtils.consumeQuietly(response.getEntity());</span>
-<span class="fc" id="L112">				throw new EmployeeAPIException(responseStatus, responseStr);</span>
+<span class="fc" id="L137">				int responseStatus = response.getStatusLine().getStatusCode();</span>
+<span class="fc" id="L138">				String responseStr = EntityUtils.toString(response.getEntity());</span>
+<span class="fc" id="L139">				logger.error(&quot;Response received from Get Employees By Id  API : &quot; + responseStatus);</span>
+<span class="fc" id="L140">				EntityUtils.consumeQuietly(response.getEntity());</span>
+<span class="fc" id="L141">				throw new EmployeeAPIException(responseStatus, responseStr);</span>
 			}
 		}
 	}
 
+	/**
+	 * 
+	 * Creates employee from given input
+	 * 
+	 * @throws EmployeeAPIThrottledException In case too many requests are sent within short span of time
+	 * @throws EmployeeAPIException If there is any other exceptional condition
+	 * 
+	 * @see com.example.rqchallenge.dao.IEmployeeDao#createEmployee(com.example.rqchallenge.dto.EmployeeDTO)
+	 */
 	@Override
 	@Retryable(retryFor = ConnectException.class, maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 2))
 	public EmployeeDTO createEmployee(EmployeeDTO inputEmployeeDTO) throws IOException {
 
-<span class="fc" id="L121">		logger.debug(&quot;Invoking API: &quot; + RestAPIURLs.CREATE_EMPLOYEE);</span>
+<span class="fc" id="L159">		logger.debug(&quot;Invoking API: &quot; + RestAPIURLs.CREATE_EMPLOYEE);</span>
 
-<span class="fc" id="L123">		HttpPost httpPost = new HttpPost(RestAPIURLs.CREATE_EMPLOYEE);</span>
+<span class="fc" id="L161">		HttpPost httpPost = new HttpPost(RestAPIURLs.CREATE_EMPLOYEE);</span>
 
-<span class="fc" id="L125">		final List&lt;NameValuePair&gt; params = new ArrayList&lt;NameValuePair&gt;();</span>
-<span class="fc" id="L126">		params.add(new BasicNameValuePair(&quot;employee_name&quot;, inputEmployeeDTO.getEmployeeName()));</span>
-<span class="fc" id="L127">		params.add(new BasicNameValuePair(&quot;employee_salary&quot;, String.valueOf(inputEmployeeDTO.getEmployeeSalary())));</span>
-<span class="fc" id="L128">		params.add(new BasicNameValuePair(&quot;employee_age&quot;, String.valueOf(inputEmployeeDTO.getEmployeeAge())));</span>
+<span class="fc" id="L163">		final List&lt;NameValuePair&gt; params = new ArrayList&lt;NameValuePair&gt;();</span>
+<span class="fc" id="L164">		params.add(new BasicNameValuePair(&quot;employee_name&quot;, inputEmployeeDTO.getEmployeeName()));</span>
+<span class="fc" id="L165">		params.add(new BasicNameValuePair(&quot;employee_salary&quot;, String.valueOf(inputEmployeeDTO.getEmployeeSalary())));</span>
+<span class="fc" id="L166">		params.add(new BasicNameValuePair(&quot;employee_age&quot;, String.valueOf(inputEmployeeDTO.getEmployeeAge())));</span>
 
-<span class="fc" id="L130">		httpPost.setEntity(new UrlEncodedFormEntity(params));</span>
+<span class="fc" id="L168">		httpPost.setEntity(new UrlEncodedFormEntity(params));</span>
 
-<span class="fc" id="L132">		try (CloseableHttpResponse response = httpClient.execute(httpPost)) {</span>
-<span class="fc bfc" id="L133" title="All 2 branches covered.">			if (response.getStatusLine().getStatusCode() == HttpStatus.OK.value()) {</span>
-<span class="fc" id="L134">				logger.info(&quot;Create Employee API returned 200 OK&quot;);</span>
-<span class="fc" id="L135">				String responseStr = EntityUtils.toString(response.getEntity());</span>
-<span class="fc" id="L136">				EntityUtils.consumeQuietly(response.getEntity());</span>
+<span class="fc" id="L170">		try (CloseableHttpResponse response = httpClient.execute(httpPost)) {</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">			if (response.getStatusLine().getStatusCode() == HttpStatus.OK.value()) {</span>
+<span class="fc" id="L172">				logger.info(&quot;Create Employee API returned 200 OK&quot;);</span>
+<span class="fc" id="L173">				String responseStr = EntityUtils.toString(response.getEntity());</span>
+<span class="fc" id="L174">				EntityUtils.consumeQuietly(response.getEntity());</span>
 
-<span class="fc" id="L138">				EmployeeDTOAPIResponse employeeApiResponse = objectMapper.readValue(responseStr,</span>
+<span class="fc" id="L176">				EmployeeDTOAPIResponse employeeApiResponse = objectMapper.readValue(responseStr,</span>
 						EmployeeDTOAPIResponse.class);
-<span class="fc" id="L140">				EmployeeDTO employeeDTO = employeeApiResponse.getData();</span>
-<span class="fc" id="L141">				return employeeDTO;</span>
+<span class="fc" id="L178">				EmployeeDTO employeeDTO = employeeApiResponse.getData();</span>
+<span class="fc" id="L179">				return employeeDTO;</span>
 
-<span class="fc bfc" id="L143" title="All 2 branches covered.">			} else if (response.getStatusLine().getStatusCode() == HttpStatus.TOO_MANY_REQUESTS.value()) {</span>
-<span class="fc" id="L144">				logger.error(&quot;Create Employee  API throttled.&quot;);</span>
-<span class="fc" id="L145">				String responseStr = EntityUtils.toString(response.getEntity());</span>
-<span class="fc" id="L146">				EntityUtils.consumeQuietly(response.getEntity());</span>
-<span class="fc" id="L147">				throw new EmployeeAPIThrottledException(HttpStatus.TOO_MANY_REQUESTS.value(), responseStr);</span>
+				/*
+				 * Added explicit handling for Error code 429 because it is observed that this particular 
+				 * exception is thrown multiple times 
+				 */
+<span class="fc bfc" id="L185" title="All 2 branches covered.">			} else if (response.getStatusLine().getStatusCode() == HttpStatus.TOO_MANY_REQUESTS.value()) {</span>
+<span class="fc" id="L186">				logger.error(&quot;Create Employee  API throttled.&quot;);</span>
+<span class="fc" id="L187">				String responseStr = EntityUtils.toString(response.getEntity());</span>
+<span class="fc" id="L188">				EntityUtils.consumeQuietly(response.getEntity());</span>
+<span class="fc" id="L189">				throw new EmployeeAPIThrottledException(HttpStatus.TOO_MANY_REQUESTS.value(), responseStr);</span>
 			} else {
-<span class="fc" id="L149">				int responseStatus = response.getStatusLine().getStatusCode();</span>
-<span class="fc" id="L150">				String responseStr = EntityUtils.toString(response.getEntity());</span>
-<span class="fc" id="L151">				logger.error(&quot;Response received from Create Employee API : &quot; + responseStatus);</span>
-<span class="fc" id="L152">				EntityUtils.consumeQuietly(response.getEntity());</span>
-<span class="fc" id="L153">				throw new EmployeeAPIException(responseStatus, responseStr);</span>
+<span class="fc" id="L191">				int responseStatus = response.getStatusLine().getStatusCode();</span>
+<span class="fc" id="L192">				String responseStr = EntityUtils.toString(response.getEntity());</span>
+<span class="fc" id="L193">				logger.error(&quot;Response received from Create Employee API : &quot; + responseStatus);</span>
+<span class="fc" id="L194">				EntityUtils.consumeQuietly(response.getEntity());</span>
+<span class="fc" id="L195">				throw new EmployeeAPIException(responseStatus, responseStr);</span>
 			}
 		}
 	}
 
+	/**
+	 * 
+	 * Deletes employee for given Id
+	 * 
+	 * @throws EmployeeAPIThrottledException In case too many requests are sent within short span of time
+	 * @throws EmployeeAPIException If there is any other exceptional condition
+	 * 
+	 * @see com.example.rqchallenge.dao.IEmployeeDao#deleteEmployeeById(java.lang.String)
+	 */
 	@Override
 	@Retryable(retryFor = ConnectException.class, maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 2))
 	public String deleteEmployeeById(String id) throws IOException {
 
-<span class="fc" id="L162">		String url = String.format(RestAPIURLs.DELETE_EMPLOYEE_BY_ID, id);</span>
-<span class="fc" id="L163">		logger.debug(&quot;Invoking API: &quot; + url);</span>
-<span class="fc" id="L164">		HttpDelete httpDelete = new HttpDelete(url);</span>
-
-<span class="fc" id="L166">		try (CloseableHttpResponse response = httpClient.execute(httpDelete)) {</span>
-<span class="fc bfc" id="L167" title="All 2 branches covered.">			if (response.getStatusLine().getStatusCode() == HttpStatus.OK.value()) {</span>
-<span class="fc" id="L168">				logger.info(</span>
+<span class="fc" id="L213">		String url = String.format(RestAPIURLs.DELETE_EMPLOYEE_BY_ID, id);</span>
+<span class="fc" id="L214">		logger.debug(&quot;Invoking API: &quot; + url);</span>
+<span class="fc" id="L215">		HttpDelete httpDelete = new HttpDelete(url);</span>
+		
+		/*
+		 * Note: Delete employee API always returns Status OK. So alternatively we can first invoke 
+		 * getEmployeeById API to check if employee exists or not and then we can invoke delete API.
+		 */
+		
+<span class="fc" id="L222">		try (CloseableHttpResponse response = httpClient.execute(httpDelete)) {</span>
+<span class="fc bfc" id="L223" title="All 2 branches covered.">			if (response.getStatusLine().getStatusCode() == HttpStatus.OK.value()) {</span>
+<span class="fc" id="L224">				logger.info(</span>
 						&quot;Delete Employee By Id API returned 200 OK, Successfully deleted employee for input id &quot; + id);
-<span class="fc" id="L170">				String responseStr = EntityUtils.toString(response.getEntity());</span>
-<span class="fc" id="L171">				EntityUtils.consumeQuietly(response.getEntity());</span>
-<span class="fc" id="L172">				TypeReference&lt;HashMap&lt;String, String&gt;&gt; typeRef = new TypeReference&lt;HashMap&lt;String, String&gt;&gt;() {};</span>
+<span class="fc" id="L226">				String responseStr = EntityUtils.toString(response.getEntity());</span>
+<span class="fc" id="L227">				EntityUtils.consumeQuietly(response.getEntity());</span>
+<span class="fc" id="L228">				TypeReference&lt;HashMap&lt;String, String&gt;&gt; typeRef = new TypeReference&lt;HashMap&lt;String, String&gt;&gt;() {</span>
+				};
 
-<span class="fc" id="L174">				Map&lt;String, String&gt; apiResponse = objectMapper.readValue(responseStr, typeRef);</span>
-<span class="fc" id="L175">				return apiResponse.get(Constants.MESSAGE);</span>
+<span class="fc" id="L231">				Map&lt;String, String&gt; apiResponse = objectMapper.readValue(responseStr, typeRef);</span>
+<span class="fc" id="L232">				return apiResponse.get(Constants.MESSAGE);</span>
 
-<span class="fc bfc" id="L177" title="All 2 branches covered.">			} else if (response.getStatusLine().getStatusCode() == HttpStatus.TOO_MANY_REQUESTS.value()) {</span>
-<span class="fc" id="L178">				logger.error(&quot;Delete Employee By Id API throttled.&quot;);</span>
-<span class="fc" id="L179">				String responseStr = EntityUtils.toString(response.getEntity());</span>
-<span class="fc" id="L180">				EntityUtils.consumeQuietly(response.getEntity());</span>
-<span class="fc" id="L181">				throw new EmployeeAPIThrottledException(HttpStatus.TOO_MANY_REQUESTS.value(), responseStr);</span>
+				/*
+				 * Added explicit handling for Error code 429 because it is observed that this particular 
+				 * exception is thrown multiple times 
+				 */
+<span class="fc bfc" id="L238" title="All 2 branches covered.">			} else if (response.getStatusLine().getStatusCode() == HttpStatus.TOO_MANY_REQUESTS.value()) {</span>
+<span class="fc" id="L239">				logger.error(&quot;Delete Employee By Id API throttled.&quot;);</span>
+<span class="fc" id="L240">				String responseStr = EntityUtils.toString(response.getEntity());</span>
+<span class="fc" id="L241">				EntityUtils.consumeQuietly(response.getEntity());</span>
+<span class="fc" id="L242">				throw new EmployeeAPIThrottledException(HttpStatus.TOO_MANY_REQUESTS.value(), responseStr);</span>
 			} else {
-<span class="fc" id="L183">				int responseStatus = response.getStatusLine().getStatusCode();</span>
-<span class="fc" id="L184">				String responseStr = EntityUtils.toString(response.getEntity());</span>
-<span class="fc" id="L185">				logger.error(&quot;Response received from Delete Employee By Id  API : &quot; + responseStatus);</span>
-<span class="fc" id="L186">				EntityUtils.consumeQuietly(response.getEntity());</span>
-<span class="fc" id="L187">				throw new EmployeeAPIException(responseStatus, responseStr);</span>
+<span class="fc" id="L244">				int responseStatus = response.getStatusLine().getStatusCode();</span>
+<span class="fc" id="L245">				String responseStr = EntityUtils.toString(response.getEntity());</span>
+<span class="fc" id="L246">				logger.error(&quot;Response received from Delete Employee By Id  API : &quot; + responseStatus);</span>
+<span class="fc" id="L247">				EntityUtils.consumeQuietly(response.getEntity());</span>
+<span class="fc" id="L248">				throw new EmployeeAPIException(responseStatus, responseStr);</span>
 			}
 		}
 	}

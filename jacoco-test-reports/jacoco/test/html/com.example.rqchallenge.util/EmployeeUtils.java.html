@@ -8,73 +8,104 @@ import java.util.regex.Pattern;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.stereotype.Component;
 
-import com.example.rqchallenge.constatnts.Constants;
+import com.example.rqchallenge.constants.Constants;
+import com.example.rqchallenge.exception.ErrorMessages;
 
+/**
+ * Common Utility class contains utility methods
+ */
 @Component
-<span class="fc" id="L14">public class EmployeeUtils {</span>
+<span class="fc" id="L18">public class EmployeeUtils {</span>
 
+	/**
+	 * @param obj
+	 * @param param
+	 * @return if input object is null or not
+	 */
 	public boolean isParamNotNull(Object obj, String param) {
-<span class="fc bfc" id="L17" title="All 2 branches covered.">		if (Objects.isNull(obj)) {</span>
-<span class="fc" id="L18">			return false;</span>
-			//throw new IllegalArgumentException(String.format(Constants.INVALID_INPUT_ERROR_MESSAGE, param));
+<span class="fc bfc" id="L26" title="All 2 branches covered.">		if (Objects.isNull(obj)) {</span>
+<span class="fc" id="L27">			return false;</span>
 		}
-<span class="fc" id="L21">		return true;</span>
+<span class="fc" id="L29">		return true;</span>
 	}
 
+	/**
+	 * Checks if input EmployeeName is in correct format or not
+	 * 
+	 * @param obj
+	 * @return boolean
+	 */
 	public boolean isEmployeeNameValid(Object obj) {
-<span class="fc bfc" id="L25" title="All 2 branches covered.">		if (isParamNotNull(obj, Constants.EMPLOYEE_NAME)) {</span>
-<span class="fc" id="L26">			String name = (String) obj;</span>
-<span class="fc" id="L27">			Pattern p = Pattern.compile(Constants.EMPLOYEE_NAME_REGEX);</span>
-<span class="fc" id="L28">			Matcher m = p.matcher(name);</span>
-<span class="fc" id="L29">			return m.matches();</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">		if (isParamNotNull(obj, Constants.EMPLOYEE_NAME)) {</span>
+<span class="fc" id="L40">			String name = (String) obj;</span>
+<span class="fc" id="L41">			Pattern p = Pattern.compile(Constants.EMPLOYEE_NAME_REGEX);</span>
+<span class="fc" id="L42">			Matcher m = p.matcher(name);</span>
+<span class="fc" id="L43">			return m.matches();</span>
 		}
-<span class="fc" id="L31">		return false;</span>
+<span class="fc" id="L45">		return false;</span>
 	}
 
+	/**
+	 * Checks if input Employee Age is valid or not
+	 * 
+	 * @param obj
+	 * @return boolean
+	 */
 	public boolean isEmployeeAgeValid(Object obj) {
-<span class="fc bfc" id="L35" title="All 2 branches covered.">		if (isParamNotNull(obj, Constants.EMPLOYEE_AGE)) {</span>
-<span class="fc" id="L36">			Integer age = (Integer) obj;</span>
-<span class="fc bfc" id="L37" title="All 4 branches covered.">			if (age &gt; 17 &amp;&amp; age &lt; 120) {</span>
-<span class="fc" id="L38">				return true;</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">		if (isParamNotNull(obj, Constants.EMPLOYEE_AGE)) {</span>
+<span class="fc" id="L56">			Integer age = (Integer) obj;</span>
+<span class="fc bfc" id="L57" title="All 4 branches covered.">			if (age &gt; 17 &amp;&amp; age &lt; 120) {</span>
+<span class="fc" id="L58">				return true;</span>
 			}
-<span class="fc" id="L40">			return false;</span>
+<span class="fc" id="L60">			return false;</span>
 		}
-<span class="fc" id="L42">		return false;</span>
+<span class="fc" id="L62">		return false;</span>
 	}
 
+	/**
+	 * Checks if input Employee Salary is valid or not
+	 * @param obj
+	 * @return boolean
+	 */
 	public boolean isEmployeeSalaryValid(Object obj) {
-<span class="fc bfc" id="L46" title="All 2 branches covered.">		if (isParamNotNull(obj, Constants.EMPLOYEE_SALARY)) {</span>
-<span class="fc" id="L47">			Integer salary = (Integer) obj;</span>
-<span class="fc bfc" id="L48" title="All 2 branches covered.">			if (salary &gt; 0) {</span>
-<span class="fc" id="L49">				return true;</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">		if (isParamNotNull(obj, Constants.EMPLOYEE_SALARY)) {</span>
+<span class="fc" id="L72">			Integer salary = (Integer) obj;</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">			if (salary &gt; 0) {</span>
+<span class="fc" id="L74">				return true;</span>
 			}
-<span class="fc" id="L51">			return false;</span>
+<span class="fc" id="L76">			return false;</span>
 		}
-<span class="fc" id="L53">		return false;</span>
+<span class="fc" id="L78">		return false;</span>
 
 	}
 
+	/**
+	 * Checks createEmployee input Map is valid or not
+	 *  
+	 * @param employeeInput
+	 * @return boolean
+	 */
 	public boolean isEmployeeInputParamValid(Map&lt;String, Object&gt; employeeInput) {
 
-<span class="fc bfc" id="L59" title="All 2 branches covered.">		if (MapUtils.isEmpty(employeeInput)) {</span>
-<span class="fc" id="L60">			throw new IllegalArgumentException(Constants.INVALID_EMPLOYEE_INPUT_ERROR_MESSAGE);</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">		if (MapUtils.isEmpty(employeeInput)) {</span>
+<span class="fc" id="L91">			throw new IllegalArgumentException(ErrorMessages.INVALID_EMPLOYEE_INPUT_ERROR_MESSAGE);</span>
 		}
 
-<span class="fc" id="L63">		boolean isNameValid = isEmployeeNameValid(employeeInput.get(Constants.EMPLOYEE_NAME));</span>
-<span class="fc bfc" id="L64" title="All 2 branches covered.">		if (!isNameValid) {</span>
-<span class="fc" id="L65">			throw new IllegalArgumentException(Constants.INVALID_EMPLOYEE_NAME_ERROR_MESSAGE);</span>
+<span class="fc" id="L94">		boolean isNameValid = isEmployeeNameValid(employeeInput.get(Constants.EMPLOYEE_NAME));</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">		if (!isNameValid) {</span>
+<span class="fc" id="L96">			throw new IllegalArgumentException(ErrorMessages.INVALID_EMPLOYEE_NAME_ERROR_MESSAGE);</span>
 		}
 
-<span class="fc" id="L68">		boolean isAgeValid = isEmployeeAgeValid(employeeInput.get(Constants.EMPLOYEE_AGE));</span>
-<span class="fc bfc" id="L69" title="All 2 branches covered.">		if (!isAgeValid) {</span>
-<span class="fc" id="L70">			throw new IllegalArgumentException(Constants.INVALID_EMPLOYEE_AGE_ERROR_MESSAGE);</span>
+<span class="fc" id="L99">		boolean isAgeValid = isEmployeeAgeValid(employeeInput.get(Constants.EMPLOYEE_AGE));</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">		if (!isAgeValid) {</span>
+<span class="fc" id="L101">			throw new IllegalArgumentException(ErrorMessages.INVALID_EMPLOYEE_AGE_ERROR_MESSAGE);</span>
 		}
 
-<span class="fc" id="L73">		boolean isSalaryValid = isEmployeeSalaryValid(employeeInput.get(Constants.EMPLOYEE_SALARY));</span>
-<span class="fc bfc" id="L74" title="All 2 branches covered.">		if (!isSalaryValid) {</span>
-<span class="fc" id="L75">			throw new IllegalArgumentException(Constants.INVALID_EMPLOYEE_SALARY_ERROR_MESSAGE);</span>
+<span class="fc" id="L104">		boolean isSalaryValid = isEmployeeSalaryValid(employeeInput.get(Constants.EMPLOYEE_SALARY));</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">		if (!isSalaryValid) {</span>
+<span class="fc" id="L106">			throw new IllegalArgumentException(ErrorMessages.INVALID_EMPLOYEE_SALARY_ERROR_MESSAGE);</span>
 		}
-<span class="fc" id="L77">		return true;</span>
+<span class="fc" id="L108">		return true;</span>
 	}
 
 }

@@ -22,19 +22,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 <span class="fc" id="L23">	private static final Logger logger = LoggerFactory.getLogger(EmployeeConfiguration.class);</span>
 
-	@Value(&quot;${max_connetion:10}&quot;)
+	@Value(&quot;${dummyrestapi.max_connetion:10}&quot;)
 	private String maxConnectionProp;
 
-	@Value(&quot;${max_connetions_per_route:3}&quot;)
+	@Value(&quot;${dummyrestapi.max_connetions_per_route:3}&quot;)
 	private String maxConnectionPerRouteProp;
 
-	@Value(&quot;${socket_timeout:10000}&quot;)
+	@Value(&quot;${dummyrestapi.socket_timeout:10000}&quot;)
 	private String socketTimeoutProp;
 
-	@Value(&quot;${connect_timeout:6000}&quot;)
+	@Value(&quot;${dummyrestapi.connect_timeout:6000}&quot;)
 	private String connectTimeoutProp;
 
-	@Value(&quot;${connection_request_timeout:10000}&quot;)
+	@Value(&quot;${dummyrestapi.connection_request_timeout:10000}&quot;)
 	private String connectionRequestTimeoutProp;
 
 	/**

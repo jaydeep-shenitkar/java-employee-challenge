@@ -22,19 +22,19 @@ public class EmployeeConfiguration {
 
 	private static final Logger logger = LoggerFactory.getLogger(EmployeeConfiguration.class);
 
-	@Value("${max_connetion:10}")
+	@Value("${dummyrestapi.max_connetion:10}")
 	private String maxConnectionProp;
 
-	@Value("${max_connetions_per_route:3}")
+	@Value("${dummyrestapi.max_connetions_per_route:3}")
 	private String maxConnectionPerRouteProp;
 
-	@Value("${socket_timeout:10000}")
+	@Value("${dummyrestapi.socket_timeout:10000}")
 	private String socketTimeoutProp;
 
-	@Value("${connect_timeout:6000}")
+	@Value("${dummyrestapi.connect_timeout:6000}")
 	private String connectTimeoutProp;
 
-	@Value("${connection_request_timeout:10000}")
+	@Value("${dummyrestapi.connection_request_timeout:10000}")
 	private String connectionRequestTimeoutProp;
 
 	/**

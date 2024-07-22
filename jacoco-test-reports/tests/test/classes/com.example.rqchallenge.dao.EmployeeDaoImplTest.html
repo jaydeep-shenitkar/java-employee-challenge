@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">0.497s</div>
+<div class="counter">0.594s</div>
 <p>duration</p>
 </div>
 </td>
@@ -79,62 +79,62 @@
 </thead>
 <tr>
 <td class="success">testCreateEmployeeAnyOtherException()</td>
-<td class="success">0.062s</td>
+<td class="success">0.087s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testCreateEmployeeTooManyRequests()</td>
-<td class="success">0.032s</td>
+<td class="success">0.031s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testDeleteEmployeeById()</td>
-<td class="success">0.050s</td>
+<td class="success">0.068s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testDeleteEmployeeByIdAnyOtherException()</td>
-<td class="success">0.065s</td>
+<td class="success">0.110s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testDeleteEmployeeByIdTooManyRequests()</td>
-<td class="success">0.038s</td>
+<td class="success">0.031s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testGetAllEmployees()</td>
-<td class="success">0.041s</td>
+<td class="success">0.029s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testGetAllEmployeesAnyOtherException()</td>
-<td class="success">0.034s</td>
+<td class="success">0.061s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testGetAllEmployeesTooManyRequests()</td>
-<td class="success">0.036s</td>
+<td class="success">0.031s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testGetEmployeeById()</td>
-<td class="success">0.032s</td>
+<td class="success">0.042s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testGetEmployeeByIdAnyOtherException()</td>
-<td class="success">0.034s</td>
+<td class="success">0.039s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testGetEmployeeByIdTooManyRequests()</td>
-<td class="success">0.036s</td>
+<td class="success">0.032s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testcreateEmployee()</td>
-<td class="success">0.037s</td>
+<td class="success">0.033s</td>
 <td class="success">passed</td>
 </tr>
 </table>
@@ -142,24 +142,24 @@
 <div id="tab1" class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>2024-07-21 22:27:57.877  INFO 6664 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.example.rqchallenge.dao.EmployeeDaoImplTest], using SpringBootContextLoader
-2024-07-21 22:27:57.878  INFO 6664 --- [    Test worker] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [com.example.rqchallenge.dao.EmployeeDaoImplTest]: no resource found for suffixes {-context.xml, Context.groovy}.
-2024-07-21 22:27:57.878  INFO 6664 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.example.rqchallenge.dao.EmployeeDaoImplTest]: EmployeeDaoImplTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2024-07-21 22:27:57.887  INFO 6664 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.example.rqchallenge.RqChallengeApplication for test class com.example.rqchallenge.dao.EmployeeDaoImplTest
-2024-07-21 22:27:57.891  INFO 6664 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
-2024-07-21 22:27:57.895  INFO 6664 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@4b37ede0, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@67f07fa1, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@644ae4ff, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@2a080ba3, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@5ea4abef, org.springframework.test.context.support.DirtiesContextTestExecutionListener@3a4ddaed, org.springframework.test.context.event.EventPublishingTestExecutionListener@993bc47, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@632cfbc5, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@18accf9c, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@4ce2f4d6, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@58070889, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@5c71329f, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@225fc6a2]
-2024-07-21 22:27:58.745 ERROR 6664 --- [    Test worker] c.e.rqchallenge.dao.EmployeeDaoImpl      : Response received from Delete Employee By Id  API : 500
-2024-07-21 22:27:58.786 ERROR 6664 --- [    Test worker] c.e.rqchallenge.dao.EmployeeDaoImpl      : Response received from Get Employees By Id  API : 500
-2024-07-21 22:27:58.814 ERROR 6664 --- [    Test worker] c.e.rqchallenge.dao.EmployeeDaoImpl      : Get Employees By Id API throttled.
-2024-07-21 22:27:58.863 ERROR 6664 --- [    Test worker] c.e.rqchallenge.dao.EmployeeDaoImpl      : Delete Employee By Id API throttled.
-2024-07-21 22:27:58.941 ERROR 6664 --- [    Test worker] c.e.rqchallenge.dao.EmployeeDaoImpl      : Response received from Create Employee API : 500
-2024-07-21 22:27:58.979 ERROR 6664 --- [    Test worker] c.e.rqchallenge.dao.EmployeeDaoImpl      : Response received from getAllEmployees API : 500
-2024-07-21 22:27:59.030  INFO 6664 --- [    Test worker] c.e.rqchallenge.dao.EmployeeDaoImpl      : Delete Employee By Id API returned 200 OK, Successfully deleted employee for input id 20
-2024-07-21 22:27:59.069  INFO 6664 --- [    Test worker] c.e.rqchallenge.dao.EmployeeDaoImpl      : Get Employees By Id API returned 200 OK
-2024-07-21 22:27:59.105 ERROR 6664 --- [    Test worker] c.e.rqchallenge.dao.EmployeeDaoImpl      : Create Employee  API throttled.
-2024-07-21 22:27:59.147  INFO 6664 --- [    Test worker] c.e.rqchallenge.dao.EmployeeDaoImpl      : GetAllEmployees API returned 200 OK
-2024-07-21 22:27:59.191 ERROR 6664 --- [    Test worker] c.e.rqchallenge.dao.EmployeeDaoImpl      : GetAllEmployees API throttled.
-2024-07-21 22:27:59.232  INFO 6664 --- [    Test worker] c.e.rqchallenge.dao.EmployeeDaoImpl      : Create Employee API returned 200 OK
+<pre>2024-07-22 13:51:20.627  INFO 14572 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.example.rqchallenge.dao.EmployeeDaoImplTest], using SpringBootContextLoader
+2024-07-22 13:51:20.627  INFO 14572 --- [    Test worker] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [com.example.rqchallenge.dao.EmployeeDaoImplTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+2024-07-22 13:51:20.628  INFO 14572 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.example.rqchallenge.dao.EmployeeDaoImplTest]: EmployeeDaoImplTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2024-07-22 13:51:20.635  INFO 14572 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.example.rqchallenge.RqChallengeApplication for test class com.example.rqchallenge.dao.EmployeeDaoImplTest
+2024-07-22 13:51:20.638  INFO 14572 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+2024-07-22 13:51:20.641  INFO 14572 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@9a88a92, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@784fb189, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@15c25cb6, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@6fd6d887, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@22e733f5, org.springframework.test.context.support.DirtiesContextTestExecutionListener@27211dd9, org.springframework.test.context.event.EventPublishingTestExecutionListener@2081c267, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@794a3410, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@62a9c857, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@4dc9de0e, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@6375af2a, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@4b37ede0, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@67f07fa1]
+2024-07-22 13:51:21.602 ERROR 14572 --- [    Test worker] c.e.rqchallenge.dao.EmployeeDaoImpl      : Response received from Delete Employee By Id  API : 500
+2024-07-22 13:51:21.654 ERROR 14572 --- [    Test worker] c.e.rqchallenge.dao.EmployeeDaoImpl      : Response received from Get Employees By Id  API : 500
+2024-07-22 13:51:21.687 ERROR 14572 --- [    Test worker] c.e.rqchallenge.dao.EmployeeDaoImpl      : Get Employees By Id API throttled.
+2024-07-22 13:51:21.723 ERROR 14572 --- [    Test worker] c.e.rqchallenge.dao.EmployeeDaoImpl      : Delete Employee By Id API throttled.
+2024-07-22 13:51:21.817 ERROR 14572 --- [    Test worker] c.e.rqchallenge.dao.EmployeeDaoImpl      : Response received from Create Employee API : 500
+2024-07-22 13:51:21.879 ERROR 14572 --- [    Test worker] c.e.rqchallenge.dao.EmployeeDaoImpl      : Response received from getAllEmployees API : 500
+2024-07-22 13:51:21.953  INFO 14572 --- [    Test worker] c.e.rqchallenge.dao.EmployeeDaoImpl      : Delete Employee By Id API returned 200 OK, Successfully deleted employee for input id 20
+2024-07-22 13:51:22.005  INFO 14572 --- [    Test worker] c.e.rqchallenge.dao.EmployeeDaoImpl      : Get Employees By Id API returned 200 OK
+2024-07-22 13:51:22.049 ERROR 14572 --- [    Test worker] c.e.rqchallenge.dao.EmployeeDaoImpl      : Create Employee  API throttled.
+2024-07-22 13:51:22.086  INFO 14572 --- [    Test worker] c.e.rqchallenge.dao.EmployeeDaoImpl      : GetAllEmployees API returned 200 OK
+2024-07-22 13:51:22.116 ERROR 14572 --- [    Test worker] c.e.rqchallenge.dao.EmployeeDaoImpl      : GetAllEmployees API throttled.
+2024-07-22 13:51:22.154  INFO 14572 --- [    Test worker] c.e.rqchallenge.dao.EmployeeDaoImpl      : Create Employee API returned 200 OK
 </pre>
 </span>
 </div>
@@ -171,7 +171,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 7.6.4</a> at Jul 21, 2024, 10:28:00 PM</p>
+<a href="http://www.gradle.org">Gradle 7.6.4</a> at Jul 22, 2024, 1:51:23 PM</p>
 </div>
 </div>
 </body>

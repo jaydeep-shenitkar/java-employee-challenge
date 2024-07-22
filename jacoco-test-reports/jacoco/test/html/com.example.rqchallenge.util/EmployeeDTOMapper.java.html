@@ -7,14 +7,24 @@ import org.springframework.stereotype.Component;
 import com.example.rqchallenge.dto.EmployeeDTO;
 import com.example.rqchallenge.model.Employee;
 
+/**
+ * Function class to convert incoming EmployeeDTO to response Employee.
+ * 
+ * This is particularly useful when we have multiple fields associated with
+ * Employee class in Database viz. isActive, password etc and we don't want to
+ * expose these fields to API consuming end point. In such cases we can use
+ * common Mapper functions to convert outgoing employee object to consuming end
+ * point and vice versa.
+ * 
+ */
 @Component
-<span class="fc" id="L11">public class EmployeeDTOMapper implements Function&lt;EmployeeDTO, Employee&gt; {</span>
+<span class="fc" id="L21">public class EmployeeDTOMapper implements Function&lt;EmployeeDTO, Employee&gt; {</span>
 
 	@Override
 	public Employee apply(EmployeeDTO employeeDTO) {
-<span class="fc" id="L15">		return Employee.builder().id(employeeDTO.getId()).employeeName(employeeDTO.getEmployeeName())</span>
-<span class="fc" id="L16">				.employeeSalary(employeeDTO.getEmployeeSalary()).employeeAge(employeeDTO.getEmployeeAge())</span>
-<span class="fc" id="L17">				.profileImage(employeeDTO.getProfileImage()).build();</span>
+<span class="fc" id="L25">		return Employee.builder().id(employeeDTO.getId()).employeeName(employeeDTO.getEmployeeName())</span>
+<span class="fc" id="L26">				.employeeSalary(employeeDTO.getEmployeeSalary()).employeeAge(employeeDTO.getEmployeeAge())</span>
+<span class="fc" id="L27">				.profileImage(employeeDTO.getProfileImage()).build();</span>
 	}
 
 }

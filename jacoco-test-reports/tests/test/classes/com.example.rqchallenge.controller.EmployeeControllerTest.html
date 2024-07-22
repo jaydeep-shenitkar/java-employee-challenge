@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">0.162s</div>
+<div class="counter">0.135s</div>
 <p>duration</p>
 </div>
 </td>
@@ -79,37 +79,37 @@
 </thead>
 <tr>
 <td class="success">testCreateEmployee()</td>
-<td class="success">0.015s</td>
+<td class="success">0.011s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testDeleteEmployee()</td>
-<td class="success">0.086s</td>
+<td class="success">0.073s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testGetAllEmployees()</td>
-<td class="success">0.013s</td>
+<td class="success">0.010s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testGetEmployeeById()</td>
-<td class="success">0.012s</td>
+<td class="success">0.011s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testGetEmployeesByNameSearch()</td>
-<td class="success">0.012s</td>
+<td class="success">0.009s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testGetHighestSalaryOfEmployees()</td>
-<td class="success">0.013s</td>
+<td class="success">0.011s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testGetTopTenHighestEarningEmployeeNames()</td>
-<td class="success">0.011s</td>
+<td class="success">0.010s</td>
 <td class="success">passed</td>
 </tr>
 </table>
@@ -117,19 +117,19 @@
 <div id="tab1" class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>2024-07-21 22:27:57.425  INFO 6664 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.example.rqchallenge.controller.EmployeeControllerTest], using SpringBootContextLoader
-2024-07-21 22:27:57.426  INFO 6664 --- [    Test worker] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [com.example.rqchallenge.controller.EmployeeControllerTest]: no resource found for suffixes {-context.xml, Context.groovy}.
-2024-07-21 22:27:57.426  INFO 6664 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.example.rqchallenge.controller.EmployeeControllerTest]: EmployeeControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2024-07-21 22:27:57.434  INFO 6664 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.example.rqchallenge.RqChallengeApplication for test class com.example.rqchallenge.controller.EmployeeControllerTest
-2024-07-21 22:27:57.438  INFO 6664 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
-2024-07-21 22:27:57.442  INFO 6664 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@5ddd3fbd, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@57ae3c0e, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@43e6bcfd, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@361d56a3, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@289a70a, org.springframework.test.context.support.DirtiesContextTestExecutionListener@2461b519, org.springframework.test.context.event.EventPublishingTestExecutionListener@5216e43c, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@e620893, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@411c5fa2, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@68fce3e5, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@d2eddc2, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@13967a64, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@30d4d6fb]
-2024-07-21 22:27:57.725  INFO 6664 --- [    Test worker] c.e.r.controller.EmployeeController      : Deleting Employee with Id 10
-2024-07-21 22:27:57.783  INFO 6664 --- [    Test worker] c.e.r.controller.EmployeeController      : Initiating fetching of Top 10 Highest earning employee names
-2024-07-21 22:27:57.796  INFO 6664 --- [    Test worker] c.e.r.controller.EmployeeController      : Initiating Get Highest salary of employees
-2024-07-21 22:27:57.813  INFO 6664 --- [    Test worker] c.e.r.controller.EmployeeController      : Initiating Get Employees By Id API
-2024-07-21 22:27:57.829  INFO 6664 --- [    Test worker] c.e.r.controller.EmployeeController      : Creating new Employee from received input
-2024-07-21 22:27:57.849  INFO 6664 --- [    Test worker] c.e.r.controller.EmployeeController      : Initiating Get all Employees API
-2024-07-21 22:27:57.865  INFO 6664 --- [    Test worker] c.e.r.controller.EmployeeController      : Initiating Get Employees By Name API
+<pre>2024-07-22 13:51:20.233  INFO 14572 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.example.rqchallenge.controller.EmployeeControllerTest], using SpringBootContextLoader
+2024-07-22 13:51:20.234  INFO 14572 --- [    Test worker] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [com.example.rqchallenge.controller.EmployeeControllerTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+2024-07-22 13:51:20.235  INFO 14572 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.example.rqchallenge.controller.EmployeeControllerTest]: EmployeeControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2024-07-22 13:51:20.244  INFO 14572 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.example.rqchallenge.RqChallengeApplication for test class com.example.rqchallenge.controller.EmployeeControllerTest
+2024-07-22 13:51:20.249  INFO 14572 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+2024-07-22 13:51:20.251  INFO 14572 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@7953a656, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@60f6c148, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@3327406e, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@a8dedda, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@6e089bcb, org.springframework.test.context.support.DirtiesContextTestExecutionListener@38a2fbc3, org.springframework.test.context.event.EventPublishingTestExecutionListener@318ff889, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@5409305f, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@7e753fd6, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@51a6af38, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@1f234e35, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@2350e46, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@55691a59]
+2024-07-22 13:51:20.496  INFO 14572 --- [    Test worker] c.e.r.controller.EmployeeController      : Deleting Employee with Id 10
+2024-07-22 13:51:20.550  INFO 14572 --- [    Test worker] c.e.r.controller.EmployeeController      : Initiating fetching of Top 10 Highest earning employee names
+2024-07-22 13:51:20.563  INFO 14572 --- [    Test worker] c.e.r.controller.EmployeeController      : Initiating Get Highest salary of employees
+2024-07-22 13:51:20.579  INFO 14572 --- [    Test worker] c.e.r.controller.EmployeeController      : Initiating Get Employees By Id API
+2024-07-22 13:51:20.593  INFO 14572 --- [    Test worker] c.e.r.controller.EmployeeController      : Creating new Employee from received input
+2024-07-22 13:51:20.608  INFO 14572 --- [    Test worker] c.e.r.controller.EmployeeController      : Initiating Get all Employees API
+2024-07-22 13:51:20.618  INFO 14572 --- [    Test worker] c.e.r.controller.EmployeeController      : Initiating Get Employees By Name API
 </pre>
 </span>
 </div>
@@ -141,7 +141,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 7.6.4</a> at Jul 21, 2024, 10:28:00 PM</p>
+<a href="http://www.gradle.org">Gradle 7.6.4</a> at Jul 22, 2024, 1:51:23 PM</p>
 </div>
 </div>
 </body>

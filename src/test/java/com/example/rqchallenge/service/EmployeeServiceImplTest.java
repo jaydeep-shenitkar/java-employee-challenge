@@ -131,6 +131,12 @@ public class EmployeeServiceImplTest {
 	}
 
 	@Test
+	public void testGetEmployeesByNameSearchListWithNoData() throws IOException {
+		when(employeeDaoImpl.getAllEmployees()).thenReturn(Optional.of(new ArrayList<>()));
+		assertThrows(EmployeeAPIException.class, () -> employeeServiceImpl.getEmployeesByNameSearch("Alice"));
+	}
+
+	@Test
 	public void testGetEmployeesByNameSearchConnectException() throws IOException {
 		when(employeeDaoImpl.getAllEmployees()).thenThrow(new ConnectException());
 		assertThrows(EmployeeAPIException.class, () -> employeeServiceImpl.getEmployeesByNameSearch("Alice"));
